@@ -11,6 +11,7 @@ export function SuscripcionList() {
   const [error, setError] = useState<string | null>(null);
   const [procesandoPago, setProcesandoPago] = useState(false);
   const [pagoExitoso, setPagoExitoso] = useState(false);
+  const [planComprado, setPlanComprado] = useState<string | null>(null);
 
   const planes = [
     {
@@ -139,8 +140,9 @@ export function SuscripcionList() {
       console.log('Pago iniciado:', pago);
 
       // Paso 2: Confirmar pago (en desarrollo, usar endpoint fake)
-      if (pago.id) {
-        const pagoConfirmado = await pagoService.confirmarFake(pago.id);
+      const pagoIdReal = pago.pagoId || pago.id;
+      if (pagoIdReal) {
+        const pagoConfirmado = await pagoService.confirmarFake(pagoIdReal);
         console.log('Pago confirmado:', pagoConfirmado);
 
         // Paso 3: Esperar un poco y luego recargar la suscripción del backend
@@ -165,7 +167,8 @@ export function SuscripcionList() {
         }
 
         setPagoExitoso(true);
-        setTimeout(() => setPagoExitoso(false), 5000);
+        setPlanComprado(planId);
+        setTimeout(() => { setPagoExitoso(false); setPlanComprado(null); }, 6000);
       }
     } catch (err) {
       setError('Error al procesar la compra. Intenta de nuevo.');
@@ -189,7 +192,7 @@ export function SuscripcionList() {
       {error && <div className="error-banner">{error}</div>}
       {pagoExitoso && (
         <div className="success-banner">
-          ✅ ¡Suscripción activada exitosamente! Disfruta de tu plan.
+          🎉 ¡Compra realizada con éxito! Tu plan <strong>{planComprado}</strong> está activo. ¡Disfruta del gimnasio!
         </div>
       )}
 

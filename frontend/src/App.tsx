@@ -7,6 +7,8 @@ import { Sidebar } from './components/Sidebar.tsx';
 import { ClaseList } from './components/Clases/ClaseListComponent.tsx';
 // @ts-ignore
 import { SuscripcionList } from './components/Suscripciones/SuscripcionListComponent.tsx';
+// @ts-ignore
+import { ReservaCalendario } from './components/Reservas/ReservaCalendario.tsx';
 import './App.css';
 
 function AppContent() {
@@ -23,7 +25,7 @@ function AppContent() {
       <main className="main-content">
         {activeModule === 'clases' && <ClaseList />}
         {activeModule === 'suscripciones' && <SuscripcionList />}
-        {activeModule === 'reservas' && <div className="module-placeholder">Módulo de Reservas - En construcción</div>}
+        {activeModule === 'reservas' && <ReservaCalendario />}
         {activeModule === 'rutinas' && <div className="module-placeholder">Módulo de Rutinas - En construcción</div>}
       </main>
     </div>

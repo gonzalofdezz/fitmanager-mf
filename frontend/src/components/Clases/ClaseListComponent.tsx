@@ -1,41 +1,29 @@
 import { useState, useEffect } from 'react';
 import { claseService, Clase } from '../../services/claseService';
-import { suscripcionService } from '../../services/suscripcionService';
+import { reservaService, Reserva } from '../../services/reservaService';
 import { useAuth } from '../../context/AuthContext';
-import { ClaseForm } from './ClaseForm';
 import './ClaseList.css';
+
+function formatFecha(fechaStr: string): string {
+  const date = new Date(fechaStr + 'T00:00:00');
+  return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+}
 
 export function ClaseList() {
   const { usuario } = useAuth();
   const [clases, setClases] = useState<Clase[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showForm, setShowForm] = useState(false);
-  const [editingClase, setEditingClase] = useState<Clase | null>(null);
-  const [planUsuario, setPlanUsuario] = useState<string | null>(null);
-  const [loadingPlan, setLoadingPlan] = useState(false);
+  const [reservando, setReservando] = useState<number | null>(null);
+  const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [misReservas, setMisReservas] = useState<Reserva[]>([]);
+  const [loadingReservas, setLoadingReservas] = useState(false);
+  const [showMisReservas, setShowMisReservas] = useState(false);
+  const [cancelando, setCancelando] = useState<string | null>(null);
 
   useEffect(() => {
     fetchClases();
-    if (usuario?.id) {
-      fetchPlanUsuario();
-    }
-  }, [usuario?.id]);
-
-  const fetchPlanUsuario = async () => {
-    if (!usuario?.id) return;
-    setLoadingPlan(true);
-    try {
-      const suscripciones = await suscripcionService.listByUsuarioId(usuario.id);
-      if (suscripciones.length > 0) {
-        setPlanUsuario(suscripciones[0].tipoPlan);
-      }
-    } catch (err) {
-      console.error('Error cargando plan:', err);
-    } finally {
-      setLoadingPlan(false);
-    }
-  };
+  }, []);
 
   const fetchClases = async () => {
     setLoading(true);
@@ -51,39 +39,63 @@ export function ClaseList() {
     }
   };
 
-  const canEditClases = planUsuario === 'PREMIUM' || planUsuario === 'VIP';
-
-  const handleCreate = async (claseData: Clase) => {
+  const fetchMisReservas = async () => {
+    if (!usuario?.id) return;
+    setLoadingReservas(true);
     try {
-      await claseService.create(claseData);
-      setShowForm(false);
-      await fetchClases();
+      const data = await reservaService.listByUsuarioId(usuario.id);
+      setMisReservas(data);
     } catch (err) {
-      setError('Error creando clase');
-      console.error(err);
+      console.error('Error cargando reservas:', err);
+    } finally {
+      setLoadingReservas(false);
     }
   };
 
-  const handleUpdate = async (claseData: Clase) => {
-    if (!editingClase?.id) return;
+  const handleToggleMisReservas = () => {
+    if (!showMisReservas) {
+      fetchMisReservas();
+    }
+    setShowMisReservas(!showMisReservas);
+  };
+
+  const handleReservar = async (claseId: number) => {
+    if (!usuario?.id) return;
+    setReservando(claseId);
+    setError(null);
+    setSuccessMsg(null);
     try {
-      await claseService.update(editingClase.id, claseData);
-      setEditingClase(null);
-      setShowForm(false);
-      await fetchClases();
+      await reservaService.create({
+        usuarioId: usuario.id,
+        claseId,
+        fechaReserva: new Date().toISOString(),
+      });
+      setSuccessMsg('✅ ¡Reserva realizada con éxito!');
+      setTimeout(() => setSuccessMsg(null), 4000);
     } catch (err) {
-      setError('Error actualizando clase');
+      setError('Error al realizar la reserva. Inténtalo de nuevo.');
       console.error(err);
+    } finally {
+      setReservando(null);
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm('¿Estás seguro de que quieres eliminar esta clase?')) return;
+  const handleCancelarReserva = async (reservaId: string) => {
+    if (!confirm('¿Cancelar esta reserva?')) return;
+    setCancelando(reservaId);
     try {
-      setClases(clases.filter(c => c.id !== id));
+      await reservaService.delete(reservaId);
+      setMisReservas(prev => prev.filter(r => r.id !== reservaId));
     } catch (err) {
-      console.error(err);
+      console.error('Error cancelando reserva:', err);
+    } finally {
+      setCancelando(null);
     }
+  };
+
+  const getClaseNombre = (claseId: number) => {
+    const clase = clases.find(c => c.id === claseId);
+    return clase?.nombre || `Clase #${claseId}`;
   };
 
   if (loading) {
@@ -93,43 +105,64 @@ export function ClaseList() {
   return (
     <div className="clase-list">
       <div className="list-header">
-        <h2>Gestión de Clases</h2>
-        {!canEditClases && !loadingPlan && (
-          <div className="plan-required">
-            ⚠️ Se requiere plan PREMIUM o VIP para crear clases
-          </div>
-        )}
-        <button
-          className={`btn-primary ${!canEditClases ? 'disabled' : ''}`}
-          onClick={() => setShowForm(true)}
-          disabled={!canEditClases}
-          title={!canEditClases ? 'Necesitas un plan PREMIUM o VIP' : 'Crear nueva clase'}
-        >
-          ➕ Nueva Clase
-        </button>
+        <h2>Clases del Gimnasio</h2>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <p className="list-subtitle">Selecciona una clase y reserva tu plaza</p>
+          <button
+            className="btn-mis-reservas"
+            onClick={handleToggleMisReservas}
+          >
+            📋 Mis Reservas {misReservas.length > 0 && !showMisReservas ? `(${misReservas.length})` : ''}
+          </button>
+        </div>
       </div>
 
       {error && <div className="error-banner">{error}</div>}
+      {successMsg && <div className="success-banner">{successMsg}</div>}
 
-      {showForm && canEditClases && (
-        <ClaseForm
-          clase={editingClase || undefined}
-          onSubmit={editingClase ? handleUpdate : handleCreate}
-          onCancel={() => {
-            setShowForm(false);
-            setEditingClase(null);
-          }}
-        />
+      {showMisReservas && (
+        <div className="mis-reservas-panel">
+          <h3>📋 Mis Reservas</h3>
+          {loadingReservas ? (
+            <p className="loading-text">Cargando tus reservas...</p>
+          ) : misReservas.length === 0 ? (
+            <p className="empty-reservas">No tienes ninguna reserva activa.</p>
+          ) : (
+            <div className="reservas-list">
+              {misReservas.map(reserva => (
+                <div key={reserva.id} className="reserva-item">
+                  <div className="reserva-info">
+                    <span className="reserva-nombre">{getClaseNombre(reserva.claseId)}</span>
+                    <span className="reserva-fecha">
+                      {reserva.fechaReserva
+                        ? new Date(reserva.fechaReserva.toString()).toLocaleDateString('es-ES', {
+                            day: 'numeric', month: 'long', year: 'numeric',
+                          })
+                        : '—'}
+                    </span>
+                    {reserva.estado && (
+                      <span className={`reserva-estado estado-${reserva.estado.toLowerCase()}`}>
+                        {reserva.estado}
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    className="btn-cancelar-reserva"
+                    onClick={() => handleCancelarReserva(reserva.id!)}
+                    disabled={cancelando === reserva.id}
+                  >
+                    {cancelando === reserva.id ? '⏳' : '✕ Cancelar'}
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       )}
 
       {clases.length === 0 ? (
         <div className="empty-state">
-          <p>📚 No hay clases registradas aún</p>
-          {canEditClases && (
-            <button className="btn-primary" onClick={() => setShowForm(true)}>
-              Crear la primera clase
-            </button>
-          )}
+          <p>📚 No hay clases disponibles en este momento</p>
         </div>
       ) : (
         <div className="clases-grid">
@@ -145,32 +178,43 @@ export function ClaseList() {
               <p className="card-description">{clase.descripcion}</p>
 
               <div className="card-info">
+                {clase.fechaEspecifica && (
+                  <div className="info-item info-date-highlight">
+                    <span className="info-label">📆 Fecha</span>
+                    <span className="info-value">{formatFecha(clase.fechaEspecifica)}</span>
+                  </div>
+                )}
+                {clase.diaSemana && (
+                  <div className="info-item">
+                    <span className="info-label">📅 Día</span>
+                    <span className="info-value info-day">{clase.diaSemana}</span>
+                  </div>
+                )}
+                {clase.horaInicio && (
+                  <div className="info-item">
+                    <span className="info-label">🕐 Hora</span>
+                    <span className="info-value">{clase.horaInicio}</span>
+                  </div>
+                )}
                 <div className="info-item">
-                  <span className="info-label">Duración</span>
+                  <span className="info-label">⏱ Duración</span>
                   <span className="info-value">{clase.duracionMinutos} min</span>
                 </div>
                 <div className="info-item">
-                  <span className="info-label">Capacidad</span>
+                  <span className="info-label">👥 Capacidad</span>
                   <span className="info-value">{clase.capacidadPorDefecto} personas</span>
                 </div>
               </div>
 
-              {canEditClases && (
-                <div className="card-actions">
-                  <button
-                    className="btn-edit"
-                    onClick={() => {
-                      setEditingClase(clase);
-                      setShowForm(true);
-                    }}
-                  >
-                    Editar
-                  </button>
-                  <button className="btn-delete" onClick={() => handleDelete(clase.id!)}>
-                    Eliminar
-                  </button>
-                </div>
-              )}
+              <div className="card-actions">
+                <button
+                  className="btn-reservar"
+                  onClick={() => handleReservar(clase.id!)}
+                  disabled={reservando === clase.id}
+                >
+                  {reservando === clase.id ? '⏳ Reservando...' : '📅 Reservar Plaza'}
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -178,4 +222,3 @@ export function ClaseList() {
     </div>
   );
 }
-

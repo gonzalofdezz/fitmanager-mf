@@ -11,10 +11,13 @@ const apiClient = axios.create({
 
 export interface Pago {
   id?: string;
-  usuarioId: string;
-  plan: 'BASIC' | 'PREMIUM' | 'VIP';
+  pagoId?: string; // campo que devuelve el backend
+  suscripcionId?: string;
+  usuarioId?: string;
+  plan?: 'BASICA' | 'PREMIUM' | 'VIP';
   monto?: number;
   estado?: 'PENDIENTE' | 'COMPLETADO' | 'FALLIDO';
+  metodoPago?: string;
   fechaCreacion?: string | Date;
 }
 
