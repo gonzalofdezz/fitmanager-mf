@@ -1,0 +1,26 @@
+{
+  "name": "fitmanager-mf",
+  "version": "0.1.0",
+  "description": "Plataforma de gestión de atletas - TFG",
+  "main": "frontend/index.html",
+  "scripts": {
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "preview": "cd frontend && npm run preview",
+    "lint": "cd frontend && npm run lint"
+  },
+  "keywords": [
+    "fitmanager",
+    "athletes",
+    "management",
+    "react",
+    "typescript"
+  ],
+  "author": "Gonzalo",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
+
