@@ -28,8 +28,7 @@ describe('ExerciseList', () => {
   });
 
   it('shows empty state when no exercises match filter', () => {
-    const { rerender } = render(<ExerciseList exercises={[]} />);
-    rerender(<ExerciseList exercises={[]} />);
+    render(<ExerciseList exercises={[]} />);
     expect(screen.getByText('No exercises found for this muscle group.')).toBeInTheDocument();
   });
 
