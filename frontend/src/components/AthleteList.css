@@ -1,15 +1,26 @@
 .athlete-list {
-  padding: 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  background: linear-gradient(135deg, #1a1f3a 0%, #0f1428 100%);
+  border-radius: 12px;
+  border: 1px solid #2a2f4a;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 215, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.athlete-list:hover {
+  border-color: #ffd700;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.15);
 }
 
 .athlete-list h2 {
   margin-top: 0;
-  color: #333;
-  border-bottom: 2px solid #007bff;
-  padding-bottom: 10px;
+  margin-bottom: 25px;
+  color: #ffd700;
+  border-bottom: 2px solid #ffd700;
+  padding-bottom: 15px;
+  font-size: 1.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .athlete-list table {
@@ -19,57 +30,78 @@
 }
 
 .athlete-list th {
-  background-color: #007bff;
-  color: white;
-  padding: 12px;
+  background-color: #0a0e27;
+  color: #ffd700;
+  padding: 15px;
   text-align: left;
-  font-weight: 600;
+  font-weight: 700;
+  border-bottom: 2px solid #ffd700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.9rem;
 }
 
 .athlete-list td {
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
+  padding: 15px;
+  border-bottom: 1px solid #2a2f4a;
+  color: #f0f0f0;
+}
+
+.athlete-list tbody tr {
+  transition: all 0.3s ease;
 }
 
 .athlete-list tbody tr:hover {
-  background-color: #f5f5f5;
+  background-color: rgba(255, 215, 0, 0.05);
+  border-left: 4px solid #ffd700;
+  padding-left: 11px;
 }
 
 .athlete-list .empty {
   text-align: center;
-  color: #666;
-  padding: 20px;
+  color: #696969;
+  padding: 40px 20px;
   font-style: italic;
+  font-size: 1.1rem;
 }
 
 .athlete-list .loading,
 .athlete-list .error {
-  padding: 15px;
-  border-radius: 4px;
-  margin-bottom: 10px;
-}
-
-.athlete-list .loading {
-  background-color: #e3f2fd;
-  color: #1976d2;
-}
-
-.athlete-list .error {
-  background-color: #ffebee;
-  color: #c62828;
-}
-
-.btn-refresh {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
+  padding: 20px;
+  border-radius: 6px;
+  margin-bottom: 20px;
   font-weight: 600;
 }
 
+.athlete-list .loading {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #60a5fa;
+  border-left: 4px solid #60a5fa;
+}
+
+.athlete-list .error {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: #ff6b6b;
+  border-left: 4px solid #ff6b6b;
+}
+
+.btn-refresh {
+  background-color: transparent;
+  color: #ffd700;
+  padding: 12px 24px;
+  border: 2px solid #ffd700;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
 .btn-refresh:hover {
-  background-color: #0056b3;
+  background-color: #ffd700;
+  color: #0a0e27;
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+  transform: translateY(-2px);
 }

@@ -1,22 +1,40 @@
-import { Home } from './pages/Home';
+import { useState } from 'react';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { AuthPage } from './pages/Auth';
+// @ts-ignore
+import { Sidebar } from './components/Sidebar.tsx';
+// @ts-ignore
+import { ClaseList } from './components/Clases/ClaseListComponent.tsx';
+// @ts-ignore
+import { SuscripcionList } from './components/Suscripciones/SuscripcionListComponent.tsx';
 import './App.css';
+
+function AppContent() {
+  const { isAuthenticated } = useAuth();
+  const [activeModule, setActiveModule] = useState('clases');
+
+  if (!isAuthenticated) {
+    return <AuthPage onAuthSuccess={() => {}} />;
+  }
+
+  return (
+    <div className="app-authenticated">
+      <Sidebar activeModule={activeModule} onModuleChange={setActiveModule} />
+      <main className="main-content">
+        {activeModule === 'clases' && <ClaseList />}
+        {activeModule === 'suscripciones' && <SuscripcionList />}
+        {activeModule === 'reservas' && <div className="module-placeholder">Módulo de Reservas - En construcción</div>}
+        {activeModule === 'rutinas' && <div className="module-placeholder">Módulo de Rutinas - En construcción</div>}
+      </main>
+    </div>
+  );
+}
 
 function App() {
   return (
-    <div className="app">
-      <header className="app-header">
-        <div className="header-content">
-          <h1>💪 FitManager</h1>
-          <p>Plataforma de gestión de atletas</p>
-        </div>
-      </header>
-      <main>
-        <Home />
-      </main>
-      <footer className="app-footer">
-        <p>&copy; 2026 FitManager TFG. Todos los derechos reservados.</p>
-      </footer>
-    </div>
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 
