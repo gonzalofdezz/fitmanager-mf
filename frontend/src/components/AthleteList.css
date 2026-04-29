@@ -8,15 +8,15 @@
 }
 
 .athlete-list:hover {
-  border-color: #ffd700;
+  border-color: #f97316;
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.15);
 }
 
 .athlete-list h2 {
   margin-top: 0;
   margin-bottom: 25px;
-  color: #ffd700;
-  border-bottom: 2px solid #ffd700;
+  color: #f97316;
+  border-bottom: 2px solid #f97316;
   padding-bottom: 15px;
   font-size: 1.8rem;
   letter-spacing: 1px;
@@ -31,11 +31,11 @@
 
 .athlete-list th {
   background-color: #0a0e27;
-  color: #ffd700;
+  color: #f97316;
   padding: 15px;
   text-align: left;
   font-weight: 700;
-  border-bottom: 2px solid #ffd700;
+  border-bottom: 2px solid #f97316;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-size: 0.9rem;
@@ -53,7 +53,7 @@
 
 .athlete-list tbody tr:hover {
   background-color: rgba(255, 215, 0, 0.05);
-  border-left: 4px solid #ffd700;
+  border-left: 4px solid #f97316;
   padding-left: 11px;
 }
 
@@ -87,9 +87,9 @@
 
 .btn-refresh {
   background-color: transparent;
-  color: #ffd700;
+  color: #f97316;
   padding: 12px 24px;
-  border: 2px solid #ffd700;
+  border: 2px solid #f97316;
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
@@ -100,7 +100,7 @@
 }
 
 .btn-refresh:hover {
-  background-color: #ffd700;
+  background-color: #f97316;
   color: #0a0e27;
   box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
   transform: translateY(-2px);

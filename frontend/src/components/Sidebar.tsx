@@ -12,10 +12,10 @@ export function Sidebar({ activeModule, onModuleChange }: SidebarProps) {
   const { usuario, logout } = useAuth();
 
   const modules = [
-    { id: 'clases', icon: '🏫', label: 'Clases' },
-    { id: 'suscripciones', icon: '💳', label: 'Suscripciones' },
-    { id: 'reservas', icon: '📅', label: 'Reservas' },
-    { id: 'rutinas', icon: '🏋️', label: 'Rutinas' },
+    { id: 'clases', label: 'Clases' },
+    { id: 'suscripciones', label: 'Suscripciones' },
+    { id: 'reservas', label: 'Reservas' },
+    { id: 'rutinas', label: 'Rutinas' },
   ];
 
   return (
@@ -27,7 +27,7 @@ export function Sidebar({ activeModule, onModuleChange }: SidebarProps) {
       <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <h2>FitManager</h2>
-          <p className="user-info">👤 {usuario?.nombre}</p>
+          <p className="user-info">{usuario?.nombre}</p>
         </div>
 
         <nav className="sidebar-nav">
@@ -41,7 +41,6 @@ export function Sidebar({ activeModule, onModuleChange }: SidebarProps) {
                 setIsOpen(false);
               }}
             >
-              <span className="nav-icon">{module.icon}</span>
               <span className="nav-label">{module.label}</span>
             </button>
           ))}
@@ -49,7 +48,7 @@ export function Sidebar({ activeModule, onModuleChange }: SidebarProps) {
 
         <div className="sidebar-footer">
           <button className="btn-logout" onClick={logout}>
-            🚪 Salir
+            Salir
           </button>
         </div>
       </aside>

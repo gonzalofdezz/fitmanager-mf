@@ -73,14 +73,14 @@ export function PagoList() {
       <div className="pago-container">
         {estadoPago === 'completado' ? (
           <div className="pago-success">
-            <h3>✅ ¡Pago Completado!</h3>
+            <h3>Pago Completado</h3>
             <p>Tu suscripción ha sido activada exitosamente.</p>
             <p className="plan-text">Plan: <strong>{planes[plan].nombre}</strong></p>
             <p className="precio-text">Cantidad: <strong>€{planes[plan].precio}</strong></p>
           </div>
         ) : estadoPago === 'error' ? (
           <div className="pago-error">
-            <h3>❌ Error en el Pago</h3>
+            <h3>Error en el Pago</h3>
             <p>Hubo un problema al procesar el pago. Intenta de nuevo.</p>
             <button
               className="btn-reintentar"
@@ -115,7 +115,7 @@ export function PagoList() {
               onClick={handleConfirmarPago}
               disabled={procesando}
             >
-              {procesando ? '⏳ Procesando...' : '✓ Confirmar Pago'}
+              {procesando ? 'Procesando...' : 'Confirmar Pago'}
             </button>
 
             <button
@@ -160,14 +160,14 @@ export function PagoList() {
               onClick={handleIniciarPago}
               disabled={procesando}
             >
-              {procesando ? '⏳ Procesando...' : '💳 Proceder al Pago'}
+              {procesando ? 'Procesando...' : 'Proceder al Pago'}
             </button>
           </div>
         )}
       </div>
 
       <div className="pago-info">
-        <h4>ℹ️ Información</h4>
+        <h4>Informacion</h4>
         <p>
           Este es un sistema de pagos de prueba. En producción, se integraría con un procesador de pagos real
           como Stripe o PayPal.

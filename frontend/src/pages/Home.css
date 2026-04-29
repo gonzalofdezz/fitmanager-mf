@@ -15,7 +15,7 @@
 }
 
 .dashboard h2 {
-  color: #ffd700;
+  color: #f97316;
   font-size: 2rem;
   margin-bottom: 40px;
   text-align: center;
@@ -44,7 +44,7 @@
 }
 
 .module-card:hover {
-  border-color: #ffd700;
+  border-color: #f97316;
   box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.15);
   transform: translateY(-5px);
 }
@@ -55,7 +55,7 @@
 }
 
 .module-card h3 {
-  color: #ffd700;
+  color: #f97316;
   font-size: 1.5rem;
   margin-bottom: 10px;
   letter-spacing: 1px;
@@ -69,9 +69,9 @@
 
 .btn-enter {
   background-color: transparent;
-  color: #ffd700;
+  color: #f97316;
   padding: 10px 20px;
-  border: 2px solid #ffd700;
+  border: 2px solid #f97316;
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
@@ -83,7 +83,7 @@
 }
 
 .btn-enter:hover {
-  background-color: #ffd700;
+  background-color: #f97316;
   color: #0a0e27;
   box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
   transform: translateY(-2px);
@@ -95,9 +95,9 @@
 
 .btn-back {
   background-color: transparent;
-  color: #ffd700;
+  color: #f97316;
   padding: 10px 20px;
-  border: 2px solid #ffd700;
+  border: 2px solid #f97316;
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
@@ -109,14 +109,14 @@
 }
 
 .btn-back:hover {
-  background-color: #ffd700;
+  background-color: #f97316;
   color: #0a0e27;
   box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
   transform: translateY(-2px);
 }
 
 .module-view h2 {
-  color: #ffd700;
+  color: #f97316;
   font-size: 2rem;
   margin-bottom: 30px;
   letter-spacing: 2px;

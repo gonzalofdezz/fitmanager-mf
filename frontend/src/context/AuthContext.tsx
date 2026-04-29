@@ -26,16 +26,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = useCallback(async (email: string, contrasena: string): Promise<boolean> => {
     try {
       const response = await authService.login(email, contrasena);
+      if (response.token) {
+        localStorage.setItem('token', response.token);
+      }
+
+      // Si el login no devuelve id, obtenerlo por email
+      let userId = response.id;
+      let userName = response.nombre;
+      if (!userId) {
+        try {
+          const userInfo = await authService.getByEmail(email);
+          userId = userInfo.id;
+          userName = userInfo.nombre || userName;
+        } catch (_) {
+          // Usar email como fallback si no se puede obtener el id
+          userId = email;
+        }
+      }
+
       const nuevoUsuario: Usuario = {
-        id: response.id || email,
-        nombre: response.nombre || email.split('@')[0],
+        id: userId || email,
+        nombre: userName || email.split('@')[0],
         email: response.email || email,
       };
       setUsuario(nuevoUsuario);
       localStorage.setItem('usuario', JSON.stringify(nuevoUsuario));
-      if (response.token) {
-        localStorage.setItem('token', response.token);
-      }
       return true;
     } catch (error) {
       console.error('Login error:', error);
@@ -57,9 +72,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem('token', response.token);
       }
 
-      // ❌ NO crear suscripción automáticamente
+      // NO crear suscripción automáticamente
       // El usuario debe comprar un plan manualmente
-      console.log('✅ Usuario registrado sin suscripción inicial');
+      console.log('Usuario registrado sin suscripción inicial');
 
       return true;
     } catch (error) {

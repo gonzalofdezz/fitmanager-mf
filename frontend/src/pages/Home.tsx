@@ -9,33 +9,33 @@ export function Home() {
   const modules = [
     {
       id: 'clases',
-      name: '🏫 Clases',
+      name: 'Clases',
       description: 'Gestiona las clases del gimnasio',
-      color: '#ffd700'
+      color: '#f97316'
     },
     {
       id: 'suscripciones',
-      name: '💳 Suscripciones',
+      name: 'Suscripciones',
       description: 'Gestiona suscripciones de usuarios',
-      color: '#ffd700'
+      color: '#f97316'
     },
     {
       id: 'reservas',
-      name: '📅 Reservas',
+      name: 'Reservas',
       description: 'Gestiona las reservas de clases',
-      color: '#ffd700'
+      color: '#f97316'
     },
     {
       id: 'pagos',
-      name: '💰 Pagos',
+      name: 'Pagos',
       description: 'Procesa pagos de suscripciones',
-      color: '#ffd700'
+      color: '#f97316'
     },
     {
       id: 'rutinas',
-      name: '🏋️ Rutinas',
+      name: 'Rutinas',
       description: 'Crea y gestiona rutinas de entrenamiento',
-      color: '#ffd700'
+      color: '#f97316'
     }
   ] as const;
 

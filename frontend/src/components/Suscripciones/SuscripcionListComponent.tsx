@@ -19,7 +19,7 @@ export function SuscripcionList() {
       nombre: 'Plan Básico',
       precio: 9.99,
       duracion: 30,
-      descripcion: '📱 Acceso básico al gimnasio',
+      descripcion: 'Acceso básico al gimnasio',
       beneficios: ['Acceso a gimnasio', 'Horario limitado', 'Sin clases grupales'],
     },
     {
@@ -27,7 +27,7 @@ export function SuscripcionList() {
       nombre: 'Plan Premium',
       precio: 19.99,
       duracion: 30,
-      descripcion: '⭐ Acceso completo',
+      descripcion: 'Acceso completo',
       beneficios: ['Acceso ilimitado', 'Horario completo', 'Clases grupales incluidas', 'Asesoramiento personalizado'],
     },
     {
@@ -35,7 +35,7 @@ export function SuscripcionList() {
       nombre: 'Plan VIP',
       precio: 29.99,
       duracion: 30,
-      descripcion: '👑 Acceso total + soporte',
+      descripcion: 'Acceso total + soporte',
       beneficios: ['Todo de Premium', 'Entrenador personal', 'Nutricionista', 'Soporte 24/7'],
     },
   ];
@@ -192,7 +192,7 @@ export function SuscripcionList() {
       {error && <div className="error-banner">{error}</div>}
       {pagoExitoso && (
         <div className="success-banner">
-          🎉 ¡Compra realizada con éxito! Tu plan <strong>{planComprado}</strong> está activo. ¡Disfruta del gimnasio!
+          Compra realizada con éxito. Tu plan <strong>{planComprado}</strong> está activo.
         </div>
       )}
 
@@ -214,7 +214,7 @@ export function SuscripcionList() {
             onClick={handleCancelarSuscripcion}
             disabled={loading}
           >
-            ❌ Cancelar Suscripción
+            Cancelar Suscripción
           </button>
         </div>
       )}
@@ -246,7 +246,7 @@ export function SuscripcionList() {
               onClick={() => handleComprarPlan(plan.id)}
               disabled={procesandoPago || (suscripcionActiva?.tipoPlan === plan.id)}
             >
-              {procesandoPago ? '⏳ Procesando...' : suscripcionActiva?.tipoPlan === plan.id ? '✓ Plan Actual' : 'Comprar Ahora'}
+              {procesandoPago ? 'Procesando...' : suscripcionActiva?.tipoPlan === plan.id ? '✓ Plan Actual' : 'Comprar Ahora'}
             </button>
           </div>
         ))}

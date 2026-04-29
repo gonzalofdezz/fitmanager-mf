@@ -175,7 +175,7 @@ export function ReservaCalendario() {
         weekday: 'long', day: 'numeric', month: 'long',
       });
       setModal({ fecha: null, open: false });
-      setSuccessMsg(`✅ Aula ${aulaSeleccionada} reservada para el ${fechaStr}`);
+      setSuccessMsg(`Aula ${aulaSeleccionada} reservada para el ${fechaStr}`);
       setTimeout(() => setSuccessMsg(null), 4000);
       await fetchReservas();
     } catch (e: unknown) {
@@ -236,7 +236,7 @@ export function ReservaCalendario() {
     <div className="reserva-calendario">
       <div className="rc-header">
         <div className="rc-header-left">
-          <h2>🏟️ Reserva de Aulas</h2>
+          <h2>Reserva de Aulas</h2>
           <p className="rc-subtitle">Elige tu día y aula para entrenar</p>
         </div>
         <div className="rc-stats">
@@ -258,7 +258,7 @@ export function ReservaCalendario() {
       </div>
 
       {successMsg && <div className="rc-toast rc-toast-success">{successMsg}</div>}
-      {errorMsg && <div className="rc-toast rc-toast-error">❌ {errorMsg}</div>}
+      {errorMsg && <div className="rc-toast rc-toast-error">{errorMsg}</div>}
 
       <div className="rc-calendar-wrapper">
         <div className="rc-calendar-nav">
@@ -294,7 +294,7 @@ export function ReservaCalendario() {
                 {!bloqueado && (
                   <div className="rc-day-info">
                     {tieneReserva ? (
-                      <span className="rc-day-badge reserved">🔵 Aula {reservasDelDia.map((r) => r.claseId).join(',')}</span>
+                      <span className="rc-day-badge reserved">Aula {reservasDelDia.map((r) => r.claseId).join(',')}</span>
                     ) : disponibles > 0 ? (
                       <span className="rc-day-badge available">{disponibles} libres</span>
                     ) : (
@@ -326,23 +326,22 @@ export function ReservaCalendario() {
 
       {proximasReservas.length > 0 && (
         <div className="rc-upcoming">
-          <h3>📋 Tus próximas reservas</h3>
+          <h3>Tus próximas reservas</h3>
           <div className="rc-upcoming-list">
             {proximasReservas.map((r) => {
               const fecha = new Date(r.fechaReserva);
               const esManana = isSameDay(fecha, new Date(hoy.getTime() + 86400000));
               return (
-                <div key={r.id} className="rc-upcoming-card">
-                  <div className="rc-upcoming-left">
-                    <span className="rc-upcoming-icon">🏟️</span>
-                    <div>
-                      <p className="rc-upcoming-aula">Aula {r.claseId}</p>
-                      <p className="rc-upcoming-fecha">
-                        {esManana ? '🔔 Mañana · ' : ''}
-                        {fecha.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}
-                      </p>
+                  <div key={r.id} className="rc-upcoming-card">
+                    <div className="rc-upcoming-left">
+                      <div>
+                        <p className="rc-upcoming-aula">Aula {r.claseId}</p>
+                        <p className="rc-upcoming-fecha">
+                          {esManana ? 'Mañana · ' : ''}
+                          {fecha.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}
+                        </p>
+                      </div>
                     </div>
-                  </div>
                   <button className="rc-cancel-btn" onClick={() => r.id && cancelarReserva(r.id, fecha)}>
                     Cancelar
                   </button>
@@ -366,7 +365,6 @@ export function ReservaCalendario() {
             <button className="rc-modal-close" onClick={() => setModal({ fecha: null, open: false })}>✕</button>
 
             <div className="rc-modal-header">
-              <span className="rc-modal-icon">🏟️</span>
               <div>
                 <h3>Reservar Aula</h3>
                 <p className="rc-modal-fecha">
@@ -379,12 +377,10 @@ export function ReservaCalendario() {
               <p className="rc-modal-label">Tipo de uso</p>
               <div className="rc-tipo-selector">
                 <button className={`rc-tipo-btn ${tipoUso === 'PERSONAL' ? 'active' : ''}`} onClick={() => setTipoUso('PERSONAL')}>
-                  <span className="rc-tipo-icon">🧘</span>
                   <span>Personal</span>
                   <small>Entrenamiento individual</small>
                 </button>
                 <button className={`rc-tipo-btn ${tipoUso === 'GRUPAL' ? 'active' : ''}`} onClick={() => setTipoUso('GRUPAL')}>
-                  <span className="rc-tipo-icon">👥</span>
                   <span>Grupal</span>
                   <small>Hasta 10 personas</small>
                 </button>
@@ -403,22 +399,22 @@ export function ReservaCalendario() {
                       title={ocupada ? 'Aula ocupada' : `Seleccionar Aula ${n}`}
                     >
                       <span className="rc-aula-num">{n}</span>
-                      <span className="rc-aula-state">{ocupada ? '🔴' : '🟢'}</span>
+                      <span className="rc-aula-state">{ocupada ? 'X' : 'O'}</span>
                     </button>
                   );
                 })}
               </div>
 
               <div className="rc-modal-info">
-                <span>📅 Semana: {getReservasSemana(modal.fecha)}/{MAX_DIAS_SEMANA} reservas usadas</span>
-                <span>🏟️ {aulasLibresModal.length} de {TOTAL_AULAS} aulas libres</span>
+                <span>Semana: {getReservasSemana(modal.fecha)}/{MAX_DIAS_SEMANA} reservas usadas</span>
+                <span>{aulasLibresModal.length} de {TOTAL_AULAS} aulas libres</span>
               </div>
             </div>
 
             <div className="rc-modal-footer">
               <button className="rc-btn-cancel" onClick={() => setModal({ fecha: null, open: false })}>Cancelar</button>
               <button className="rc-btn-confirm" onClick={confirmarReserva} disabled={confirmandoReserva}>
-                {confirmandoReserva ? <span className="rc-spinner-sm" /> : `✅ Confirmar Aula ${aulaSeleccionada}`}
+                {confirmandoReserva ? <span className="rc-spinner-sm" /> : `Confirmar Aula ${aulaSeleccionada}`}
               </button>
             </div>
           </div>

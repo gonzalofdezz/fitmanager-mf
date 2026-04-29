@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { claseService, Clase } from '../../services/claseService';
-import { reservaService, Reserva } from '../../services/reservaService';
+import { inscripcionService, Inscripcion } from '../../services/inscripcionService';
 import { useAuth } from '../../context/AuthContext';
 import './ClaseList.css';
 
@@ -14,11 +14,11 @@ export function ClaseList() {
   const [clases, setClases] = useState<Clase[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [reservando, setReservando] = useState<number | null>(null);
+  const [inscribiendo, setInscribiendo] = useState<number | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
-  const [misReservas, setMisReservas] = useState<Reserva[]>([]);
-  const [loadingReservas, setLoadingReservas] = useState(false);
-  const [showMisReservas, setShowMisReservas] = useState(false);
+  const [misInscripciones, setMisInscripciones] = useState<Inscripcion[]>([]);
+  const [loadingInscripciones, setLoadingInscripciones] = useState(false);
+  const [showMisInscripciones, setShowMisInscripciones] = useState(false);
   const [cancelando, setCancelando] = useState<string | null>(null);
 
   useEffect(() => {
@@ -39,55 +39,54 @@ export function ClaseList() {
     }
   };
 
-  const fetchMisReservas = async () => {
+  const fetchMisInscripciones = async () => {
     if (!usuario?.id) return;
-    setLoadingReservas(true);
+    setLoadingInscripciones(true);
     try {
-      const data = await reservaService.listByUsuarioId(usuario.id);
-      setMisReservas(data);
+      const data = await inscripcionService.listByUsuarioId(usuario.id);
+      setMisInscripciones(data);
     } catch (err) {
-      console.error('Error cargando reservas:', err);
+      console.error('Error cargando inscripciones:', err);
     } finally {
-      setLoadingReservas(false);
+      setLoadingInscripciones(false);
     }
   };
 
-  const handleToggleMisReservas = () => {
-    if (!showMisReservas) {
-      fetchMisReservas();
+  const handleToggleMisInscripciones = () => {
+    if (!showMisInscripciones) {
+      fetchMisInscripciones();
     }
-    setShowMisReservas(!showMisReservas);
+    setShowMisInscripciones(!showMisInscripciones);
   };
 
-  const handleReservar = async (claseId: number) => {
+  const handleInscribirse = async (claseId: number) => {
     if (!usuario?.id) return;
-    setReservando(claseId);
+    setInscribiendo(claseId);
     setError(null);
     setSuccessMsg(null);
     try {
-      await reservaService.create({
-        usuarioId: usuario.id,
-        claseId,
-        fechaReserva: new Date().toISOString(),
-      });
-      setSuccessMsg('✅ ¡Reserva realizada con éxito!');
+      await inscripcionService.create({ usuarioId: usuario.id, claseId });
+      setSuccessMsg('Te has inscrito en la clase con éxito');
       setTimeout(() => setSuccessMsg(null), 4000);
-    } catch (err) {
-      setError('Error al realizar la reserva. Inténtalo de nuevo.');
+      // Actualizar inscripciones si el panel está abierto
+      if (showMisInscripciones) fetchMisInscripciones();
+    } catch (err: any) {
+      const msg = err?.response?.data?.message || err?.response?.data || null;
+      setError(msg ? String(msg) : 'Error al inscribirte. Inténtalo de nuevo.');
       console.error(err);
     } finally {
-      setReservando(null);
+      setInscribiendo(null);
     }
   };
 
-  const handleCancelarReserva = async (reservaId: string) => {
-    if (!confirm('¿Cancelar esta reserva?')) return;
-    setCancelando(reservaId);
+  const handleCancelarInscripcion = async (inscripcionId: string) => {
+    if (!confirm('¿Cancelar esta inscripción?')) return;
+    setCancelando(inscripcionId);
     try {
-      await reservaService.delete(reservaId);
-      setMisReservas(prev => prev.filter(r => r.id !== reservaId));
+      await inscripcionService.delete(inscripcionId);
+      setMisInscripciones(prev => prev.filter(i => i.id !== inscripcionId));
     } catch (err) {
-      console.error('Error cancelando reserva:', err);
+      console.error('Error cancelando inscripción:', err);
     } finally {
       setCancelando(null);
     }
@@ -98,6 +97,10 @@ export function ClaseList() {
     return clase?.nombre || `Clase #${claseId}`;
   };
 
+  const getClaseInfo = (claseId: number) => {
+    return clases.find(c => c.id === claseId);
+  };
+
   if (loading) {
     return <div className="loading">Cargando clases...</div>;
   }
@@ -105,56 +108,61 @@ export function ClaseList() {
   return (
     <div className="clase-list">
       <div className="list-header">
-        <h2>Clases del Gimnasio</h2>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <p className="list-subtitle">Selecciona una clase y reserva tu plaza</p>
-          <button
-            className="btn-mis-reservas"
-            onClick={handleToggleMisReservas}
-          >
-            📋 Mis Reservas {misReservas.length > 0 && !showMisReservas ? `(${misReservas.length})` : ''}
-          </button>
+        <div>
+          <h2>Clases del Gimnasio</h2>
+          <p className="list-subtitle">Selecciona una clase y apúntate</p>
         </div>
+        <button
+          className="btn-mis-inscripciones"
+          onClick={handleToggleMisInscripciones}
+        >
+          Mis Inscripciones {misInscripciones.length > 0 && !showMisInscripciones ? `(${misInscripciones.length})` : ''}
+        </button>
       </div>
 
       {error && <div className="error-banner">{error}</div>}
       {successMsg && <div className="success-banner">{successMsg}</div>}
 
-      {showMisReservas && (
+      {showMisInscripciones && (
         <div className="mis-reservas-panel">
-          <h3>📋 Mis Reservas</h3>
-          {loadingReservas ? (
-            <p className="loading-text">Cargando tus reservas...</p>
-          ) : misReservas.length === 0 ? (
-            <p className="empty-reservas">No tienes ninguna reserva activa.</p>
+          <h3>Mis Inscripciones a Clases</h3>
+          {loadingInscripciones ? (
+            <p className="loading-text">Cargando tus inscripciones...</p>
+          ) : misInscripciones.length === 0 ? (
+            <p className="empty-reservas">Todavía no estás inscrito en ninguna clase.</p>
           ) : (
             <div className="reservas-list">
-              {misReservas.map(reserva => (
-                <div key={reserva.id} className="reserva-item">
-                  <div className="reserva-info">
-                    <span className="reserva-nombre">{getClaseNombre(reserva.claseId)}</span>
-                    <span className="reserva-fecha">
-                      {reserva.fechaReserva
-                        ? new Date(reserva.fechaReserva.toString()).toLocaleDateString('es-ES', {
-                            day: 'numeric', month: 'long', year: 'numeric',
-                          })
-                        : '—'}
-                    </span>
-                    {reserva.estado && (
-                      <span className={`reserva-estado estado-${reserva.estado.toLowerCase()}`}>
-                        {reserva.estado}
+              {misInscripciones.map(inscripcion => {
+                const claseInfo = getClaseInfo(inscripcion.claseId);
+                return (
+                  <div key={inscripcion.id} className="reserva-item">
+                    <div className="reserva-info">
+                      <span className="reserva-nombre">
+                        {inscripcion.nombreClase || getClaseNombre(inscripcion.claseId)}
                       </span>
-                    )}
+                      {claseInfo && (
+                        <span className="reserva-fecha">
+                          {claseInfo.diaSemana && `${claseInfo.diaSemana}`}
+                          {claseInfo.horaInicio && ` · ${claseInfo.horaInicio}`}
+                          {claseInfo.fechaEspecifica && ` · ${formatFecha(claseInfo.fechaEspecifica)}`}
+                        </span>
+                      )}
+                      {inscripcion.estado && (
+                        <span className={`reserva-estado estado-${inscripcion.estado.toLowerCase()}`}>
+                          {inscripcion.estado}
+                        </span>
+                      )}
+                    </div>
+                    <button
+                      className="btn-cancelar-reserva"
+                      onClick={() => handleCancelarInscripcion(inscripcion.id!)}
+                      disabled={cancelando === inscripcion.id}
+                    >
+                      {cancelando === inscripcion.id ? 'Cancelando...' : 'Cancelar'}
+                    </button>
                   </div>
-                  <button
-                    className="btn-cancelar-reserva"
-                    onClick={() => handleCancelarReserva(reserva.id!)}
-                    disabled={cancelando === reserva.id}
-                  >
-                    {cancelando === reserva.id ? '⏳' : '✕ Cancelar'}
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
@@ -162,7 +170,7 @@ export function ClaseList() {
 
       {clases.length === 0 ? (
         <div className="empty-state">
-          <p>📚 No hay clases disponibles en este momento</p>
+          <p>No hay clases disponibles en este momento</p>
         </div>
       ) : (
         <div className="clases-grid">
@@ -180,28 +188,28 @@ export function ClaseList() {
               <div className="card-info">
                 {clase.fechaEspecifica && (
                   <div className="info-item info-date-highlight">
-                    <span className="info-label">📆 Fecha</span>
+                    <span className="info-label">Fecha</span>
                     <span className="info-value">{formatFecha(clase.fechaEspecifica)}</span>
                   </div>
                 )}
                 {clase.diaSemana && (
                   <div className="info-item">
-                    <span className="info-label">📅 Día</span>
+                    <span className="info-label">Día</span>
                     <span className="info-value info-day">{clase.diaSemana}</span>
                   </div>
                 )}
                 {clase.horaInicio && (
                   <div className="info-item">
-                    <span className="info-label">🕐 Hora</span>
+                    <span className="info-label">Hora</span>
                     <span className="info-value">{clase.horaInicio}</span>
                   </div>
                 )}
                 <div className="info-item">
-                  <span className="info-label">⏱ Duración</span>
+                  <span className="info-label">Duración</span>
                   <span className="info-value">{clase.duracionMinutos} min</span>
                 </div>
                 <div className="info-item">
-                  <span className="info-label">👥 Capacidad</span>
+                  <span className="info-label">Capacidad</span>
                   <span className="info-value">{clase.capacidadPorDefecto} personas</span>
                 </div>
               </div>
@@ -209,10 +217,10 @@ export function ClaseList() {
               <div className="card-actions">
                 <button
                   className="btn-reservar"
-                  onClick={() => handleReservar(clase.id!)}
-                  disabled={reservando === clase.id}
+                  onClick={() => handleInscribirse(clase.id!)}
+                  disabled={inscribiendo === clase.id}
                 >
-                  {reservando === clase.id ? '⏳ Reservando...' : '📅 Reservar Plaza'}
+                  {inscribiendo === clase.id ? 'Inscribiendo...' : 'Inscribirme'}
                 </button>
               </div>
             </div>

@@ -1,0 +1,513 @@
+/* ══════════════════════════════════════════════════════
+   RUTINA LIST – Tema negro carbón + naranja
+   ══════════════════════════════════════════════════════ */
+
+.rutina-list {
+  padding: 30px;
+  background-color: #111111;
+  min-height: 100vh;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* ── HEADER ── */
+.rutina-list .list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.rutina-list .list-header h2 {
+  font-size: 2rem;
+  color: #f97316;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.rutina-list .list-subtitle {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  margin: 6px 0 0;
+}
+
+.btn-nueva-rutina {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: #111111;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+
+.btn-nueva-rutina:hover {
+  background: linear-gradient(135deg, #fb923c, #f97316);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.35);
+}
+
+/* ── BANNERS ── */
+.error-banner {
+  background: rgba(255, 107, 107, 0.12);
+  border: 1px solid rgba(255, 107, 107, 0.35);
+  color: #ff6b6b;
+  padding: 12px 18px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+.success-banner {
+  background: rgba(74, 222, 128, 0.12);
+  border: 1px solid rgba(74, 222, 128, 0.35);
+  color: #4ade80;
+  padding: 12px 18px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+/* ── FORMULARIO NUEVA/EDITAR RUTINA ── */
+.rutina-form-panel {
+  background: linear-gradient(135deg, #1a1a1a 0%, #141414 100%);
+  border: 2px solid #2a2a2a;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  animation: slideDown 0.2s ease;
+}
+
+.rutina-form-panel.editing {
+  border-color: rgba(249, 115, 22, 0.4);
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.rutina-form-panel h3 {
+  color: #f97316;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 18px;
+}
+
+.rutina-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-row label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #696969;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.form-row input {
+  background: #141414;
+  border: 1.5px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #f0f0f0;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+.form-row input:focus {
+  outline: none;
+  border-color: #f97316;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.btn-save {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: #111111;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-save:hover:not(:disabled) {
+  background: linear-gradient(135deg, #fb923c, #f97316);
+  transform: translateY(-1px);
+}
+
+.btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-cancel-form {
+  background: transparent;
+  border: 1.5px solid #2a2a2a;
+  color: #b0b0b0;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.btn-cancel-form:hover {
+  background: rgba(255,255,255,0.05);
+  color: #f0f0f0;
+}
+
+/* ── EMPTY STATE / LOADING ── */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  color: #f97316;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+.loading-text {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  padding: 10px 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #696969;
+  font-size: 1.05rem;
+}
+
+/* ── GRID RUTINAS ── */
+.rutinas-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── CARD RUTINA ── */
+.rutina-card {
+  background: linear-gradient(135deg, #1a1a1a 0%, #141414 100%);
+  border: 2px solid #2a2a2a;
+  border-radius: 16px;
+  padding: 20px 24px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.rutina-card:hover {
+  border-color: rgba(249, 115, 22, 0.3);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.rutina-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.rutina-title-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.rutina-title-area h3 {
+  color: #f97316;
+  font-size: 1.15rem;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.badge-activa {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-activa.activa {
+  background: rgba(74, 222, 128, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.badge-activa.inactiva {
+  background: rgba(255, 107, 107, 0.15);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.rutina-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.btn-edit-rutina,
+.btn-delete-rutina {
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.btn-edit-rutina:hover { background: rgba(249, 115, 22,0.1); border-color: rgba(249, 115, 22,0.4); }
+.btn-delete-rutina:hover { background: rgba(255,107,107,0.1); border-color: rgba(255,107,107,0.4); }
+
+.rutina-desc {
+  color: #b0b0b0;
+  font-size: 0.9rem;
+  margin: 0 0 12px;
+  line-height: 1.5;
+}
+
+.btn-toggle-ejercicios {
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  color: #b0b0b0;
+  padding: 7px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 4px;
+}
+
+.btn-toggle-ejercicios:hover {
+  background: rgba(249, 115, 22,0.06);
+  border-color: rgba(249, 115, 22,0.3);
+  color: #f97316;
+}
+
+/* ── PANEL EJERCICIOS ── */
+.ejercicios-panel {
+  margin-top: 16px;
+  border-top: 1px solid #2a2a2a;
+  padding-top: 16px;
+}
+
+.empty-ejercicios {
+  color: #696969;
+  font-size: 0.88rem;
+  padding: 8px 0;
+}
+
+.ejercicios-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.ejercicio-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 10px 14px;
+  gap: 10px;
+  transition: background 0.2s;
+}
+
+.ejercicio-item:hover { background: rgba(249, 115, 22,0.04); }
+
+.ej-info {
+  flex: 1;
+}
+
+.ej-nombre {
+  display: block;
+  font-weight: 600;
+  color: #f0f0f0;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.ej-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ej-stats span {
+  font-size: 0.78rem;
+  color: #b0b0b0;
+  background: rgba(255,255,255,0.05);
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+
+.ej-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.btn-edit-ej,
+.btn-delete-ej {
+  background: transparent;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.btn-edit-ej:hover { background: rgba(249, 115, 22,0.1); border-color: rgba(249, 115, 22,0.4); }
+.btn-delete-ej:hover { background: rgba(255,107,107,0.1); border-color: rgba(255,107,107,0.4); }
+
+/* ── FORMULARIOS EJERCICIO ── */
+.ej-add-form,
+.ej-edit-form {
+  background: rgba(0,0,0,0.2);
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 14px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ej-add-form input,
+.ej-edit-form input[type="text"] {
+  background: #141414;
+  border: 1.5px solid #2a2a2a;
+  border-radius: 7px;
+  padding: 8px 12px;
+  color: #f0f0f0;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.ej-add-form input:focus,
+.ej-edit-form input:focus {
+  outline: none;
+  border-color: #f97316;
+}
+
+.ej-nums {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ej-nums label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: #696969;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex: 1;
+  min-width: 70px;
+}
+
+.ej-nums input {
+  background: #141414;
+  border: 1.5px solid #2a2a2a;
+  border-radius: 6px;
+  padding: 6px 8px;
+  color: #f0f0f0;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.ej-nums input:focus {
+  outline: none;
+  border-color: #f97316;
+}
+
+.ej-form-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-save-ej {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: #111111;
+  border: none;
+  padding: 7px 18px;
+  border-radius: 7px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.btn-save-ej:hover:not(:disabled) {
+  background: linear-gradient(135deg, #fb923c, #f97316);
+}
+
+.btn-save-ej:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-add-ejercicio {
+  background: transparent;
+  border: 1.5px dashed #2a2a2a;
+  color: #b0b0b0;
+  padding: 9px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: all 0.2s;
+  width: 100%;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.btn-add-ejercicio:hover {
+  border-color: rgba(249, 115, 22,0.4);
+  color: #f97316;
+  background: rgba(249, 115, 22,0.04);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .rutina-list {
+    padding: 14px;
+  }
+
+  .rutina-list .list-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ej-nums {
+    flex-direction: column;
+  }
+}
+
+

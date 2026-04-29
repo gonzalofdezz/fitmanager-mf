@@ -9,7 +9,7 @@ body {
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #0a0e27;
+  background-color: #111111;
 }
 
 #root {
@@ -26,15 +26,15 @@ body {
 .main-content {
   flex: 1;
   margin-left: 280px;
-  background-color: #0a0e27;
+  background-color: #111111;
   background-image:
-    radial-gradient(ellipse at 20% 50%, rgba(255, 215, 0, 0.05) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(255, 215, 0, 0.03) 0%, transparent 50%);
+    radial-gradient(ellipse at 20% 50%, rgba(249, 115, 22, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(249, 115, 22, 0.02) 0%, transparent 50%);
 }
 
 .module-placeholder {
   padding: 40px;
-  color: #ffd700;
+  color: #f97316;
   text-align: center;
   font-size: 1.5rem;
   font-weight: 600;
@@ -42,8 +42,185 @@ body {
   text-transform: uppercase;
 }
 
+.module-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #111111;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(249, 115, 22, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(249, 115, 22, 0.02) 0%, transparent 50%);
+}
+
+.module-header {
+  padding: 20px 40px;
+  border-bottom: 1px solid #1e1e1e;
+  background: rgba(10, 10, 10, 0.5);
+}
+
+.back-button {
+  background: transparent;
+  color: #f97316;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s;
+}
+
+.back-button:hover {
+  background: rgba(249, 115, 22, 0.1);
+  border-color: #f97316;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.2);
+}
+
+.module-content {
+  flex: 1;
+  padding: 40px;
+}
+
+/* Overlay para módulos sin autenticar */
+.module-overlay-wrapper {
+  position: relative;
+  pointer-events: none;
+}
+
+.module-overlay-wrapper > :not(.module-overlay) {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.module-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(13, 13, 13, 0.7);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: auto;
+  opacity: 1 !important;
+}
+
+.overlay-content {
+  background: #1a1a1a;
+  border: 2px solid #f97316;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  max-width: 400px;
+  backdrop-filter: blur(10px);
+  opacity: 1 !important;
+}
+
+.overlay-content h2 {
+  color: #f97316;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 1 !important;
+}
+
+.overlay-content p {
+  color: #ffffff;
+  margin-bottom: 32px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  opacity: 1 !important;
+}
+
+.overlay-button {
+  background: #f97316;
+  color: #0d0d0d;
+  border: none;
+  padding: 12px 36px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  opacity: 1 !important;
+}
+
+.overlay-button:hover {
+  background: #fb923c;
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Modal Auth */
+.auth-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.auth-modal {
+  position: relative;
+  background: #111111;
+  border: 1px solid rgba(249, 115, 22, 0.2);
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: #a0a0a0;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+  z-index: 10;
+}
+
+.modal-close:hover {
+  color: #f97316;
+}
+
 @media (max-width: 768px) {
   .main-content {
     margin-left: 0;
+  }
+
+  .overlay-content {
+    padding: 24px;
+  }
+
+  .auth-modal {
+    max-width: 95%;
+    max-height: 90vh;
   }
 }
