@@ -11,9 +11,10 @@ import { ReservaCalendario } from './components/Reservas/ReservaCalendario';
 import { GestionReservas } from './components/Reservas/GestionReservas';
 import { RutinaList } from './components/Rutinas/RutinaListComponent';
 import { GestionRutinas } from './components/Rutinas/GestionRutinas';
+import { ProgresionComponent } from './components/Progresion/ProgresionComponent';
 import './App.css';
 
-type AppView = 'landing' | 'clases' | 'gestion-clases' | 'suscripciones' | 'gestion-suscripciones' | 'reservas' | 'gestion-reservas' | 'rutinas' | 'gestion-rutinas' | 'contacto';
+type AppView = 'landing' | 'clases' | 'gestion-clases' | 'suscripciones' | 'gestion-suscripciones' | 'reservas' | 'gestion-reservas' | 'rutinas' | 'gestion-rutinas' | 'progresion' | 'contacto';
 
 interface ModuleWrapperProps {
   isAuthenticated: boolean;
@@ -125,12 +126,18 @@ function AppContent() {
              />
            )}
            {view === 'gestion-rutinas' && isManager && (
-             <GestionRutinasWrapper
-               isAuthenticated={isAuthenticated}
-               onRequestAuth={handleRequestAuth}
-             />
-           )}
-           {view === 'contacto' && <Contact />}
+              <GestionRutinasWrapper
+                isAuthenticated={isAuthenticated}
+                onRequestAuth={handleRequestAuth}
+              />
+            )}
+            {view === 'progresion' && (
+              <ProgresionWrapper
+                isAuthenticated={isAuthenticated}
+                onRequestAuth={handleRequestAuth}
+              />
+            )}
+            {view === 'contacto' && <Contact />}
         </main>
       </div>
     </>
@@ -275,6 +282,25 @@ function RutinaListWrapper({ isAuthenticated, onRequestAuth }: ModuleWrapperProp
   return (
     <div className={isAuthenticated ? '' : 'module-overlay-wrapper'}>
       <RutinaList />
+      {!isAuthenticated && (
+        <div className="module-overlay">
+          <div className="overlay-content">
+            <h2>Acceso Limitado</h2>
+            <p>Inicia sesión para acceder a todas las funciones</p>
+            <button className="overlay-button" onClick={onRequestAuth}>
+              Iniciar Sesión
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ProgresionWrapper({ isAuthenticated, onRequestAuth }: ModuleWrapperProps) {
+  return (
+    <div className={isAuthenticated ? '' : 'module-overlay-wrapper'}>
+      <ProgresionComponent />
       {!isAuthenticated && (
         <div className="module-overlay">
           <div className="overlay-content">

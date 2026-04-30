@@ -18,6 +18,8 @@ export function Landing({
     { label: 'Planes', desc: 'Básico · Premium · VIP', action: 'suscripciones' },
     { label: 'Reservas', desc: 'Reserva tu aula', action: 'reservas' },
     { label: 'Rutinas', desc: 'Gestiona tus entrenamientos', action: 'rutinas' },
+    { label: 'Mi Progresión', desc: 'Sigue tu avance y logros', action: 'progresion' },
+    { label: 'Contacto', desc: 'Ponte en contacto con nosotros', action: 'contacto' },
   ];
 
   const stats = [
@@ -60,19 +62,20 @@ export function Landing({
         </div>
 
         {/* NAVBAR IGUAL PARA TODOS */}
-        <div className="nav-links">
-          <a onClick={() => handleModuleClick('clases')} className="nav-link-module">Clases</a>
-          <a onClick={() => handleModuleClick('suscripciones')} className="nav-link-module">Planes</a>
-          <a onClick={() => handleModuleClick('reservas')} className="nav-link-module">Reservas</a>
-          <a onClick={() => handleModuleClick('rutinas')} className="nav-link-module">Rutinas</a>
-          {isManager && (
-            <>
-              <span className="nav-divider">|</span>
-              <a onClick={() => handleModuleClick('gestion-clases')} className="nav-link-module nav-link-admin">Gestionar</a>
-            </>
-          )}
-          <a onClick={() => handleModuleClick('contacto')} className="nav-link-module">Contacto</a>
-        </div>
+         <div className="nav-links">
+           <a onClick={() => handleModuleClick('clases')} className="nav-link-module">Clases</a>
+           <a onClick={() => handleModuleClick('suscripciones')} className="nav-link-module">Planes</a>
+           <a onClick={() => handleModuleClick('reservas')} className="nav-link-module">Reservas</a>
+           <a onClick={() => handleModuleClick('rutinas')} className="nav-link-module">Rutinas</a>
+           <a onClick={() => handleModuleClick('progresion')} className="nav-link-module">Mi Progresión</a>
+           {isManager && (
+             <>
+               <span className="nav-divider">|</span>
+               <a onClick={() => handleModuleClick('gestion-clases')} className="nav-link-module nav-link-admin">Gestionar</a>
+             </>
+           )}
+           <a onClick={() => handleModuleClick('contacto')} className="nav-link-module">Contacto</a>
+         </div>
 
         {!isAuthenticated ? (
           <>
@@ -204,6 +207,7 @@ export function Landing({
               { title: 'Clases en grupo', detail: 'Yoga · Spinning · Crossfit · Pilates', tag: 'Disponible', action: 'clases' },
               { title: 'Reserva de aulas', detail: 'Personal o grupal · Hasta 30 días', tag: 'Online', action: 'reservas' },
               { title: 'Rutinas personalizadas', detail: 'Crea, gestiona y optimiza tu entrenamiento', tag: 'Nuevo', action: 'rutinas' },
+              { title: 'Mi Progresión', detail: 'Sigue tu avance, entrenamientos y logros', tag: 'Tracker', action: 'progresion' },
               ...(isManager ? [{ title: 'Gestión de Clases', detail: 'Crea, edita y elimina clases', tag: 'Admin', action: 'gestion-clases' }] : []),
               ...(isManager ? [{ title: 'Gestión de Planes', detail: 'Administra suscripciones de usuarios', tag: 'Admin', action: 'gestion-suscripciones' }] : []),
               ...(isManager ? [{ title: 'Gestión de Reservas', detail: 'Controla todas las reservas', tag: 'Admin', action: 'gestion-reservas' }] : []),

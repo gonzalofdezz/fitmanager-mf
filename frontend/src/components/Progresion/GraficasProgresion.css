@@ -1,0 +1,287 @@
+.graficas-progresion {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background-color: #0d0d0d;
+  border-radius: 12px;
+}
+
+/* ─── SECTION TÍTULO ─── */
+.graficas-header {
+  border-bottom: 2px solid rgba(249, 115, 22, 0.2);
+  padding-bottom: 16px;
+}
+
+.graficas-header h3 {
+  color: #f97316;
+  font-size: 1.4rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+/* ─── SELECTOR DE RANGO ─── */
+.rango-selector {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  padding: 16px;
+  background: rgba(249, 115, 22, 0.04);
+  border: 1px solid rgba(249, 115, 22, 0.15);
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.rango-selector label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #a0a0a0;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.rango-selector input {
+  padding: 8px 12px;
+  background: #1a1a1a;
+  border: 1.5px solid rgba(249, 115, 22, 0.25);
+  border-radius: 6px;
+  color: #f0f0f0;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.rango-selector input:focus {
+  outline: none;
+  border-color: #f97316;
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.2);
+  background: #1c1c1c;
+}
+
+.btn-rango {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: #0d0d0d;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  transition: all 0.2s;
+}
+
+.btn-rango:hover {
+  background: linear-gradient(135deg, #fb923c, #f97316);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+  transform: translateY(-1px);
+}
+
+/* ─── GRÁFICO CONTENEDOR ─── */
+.grafico-container {
+  background: #1a1a1a;
+  border: 1.5px solid rgba(249, 115, 22, 0.15);
+  border-radius: 8px;
+  padding: 16px;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.grafico-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(249, 115, 22, 0.03) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ─── RECHARTS CUSTOMIZACIÓN ─── */
+.recharts-wrapper {
+  position: relative;
+  z-index: 1;
+}
+
+.recharts-cartesian-axis-tick text {
+  fill: #696969;
+  font-size: 12px;
+}
+
+.recharts-tooltip-wrapper-left {
+  outline: none;
+}
+
+.recharts-default-tooltip {
+  background: #1c1c1c;
+  border: 1.5px solid #f97316;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(249, 115, 22, 0.2);
+}
+
+.recharts-tooltip-label {
+  color: #f0f0f0;
+  font-weight: 600;
+}
+
+.recharts-tooltip-item {
+  color: #f97316;
+}
+
+/* ─── FORMULARIO NUEVA MEDICIÓN ─── */
+.nueva-medicion-form {
+  background: rgba(249, 115, 22, 0.06);
+  border: 1.5px solid rgba(249, 115, 22, 0.15);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.nueva-medicion-form h4 {
+  color: #f97316;
+  font-size: 1rem;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-group label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #a0a0a0;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.form-group input,
+.form-group textarea {
+  padding: 8px 12px;
+  background: #111111;
+  border: 1.5px solid rgba(249, 115, 22, 0.25);
+  border-radius: 6px;
+  color: #f0f0f0;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #f97316;
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.2);
+  background: #1c1c1c;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-guardar-medicion {
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: #0d0d0d;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  transition: all 0.2s;
+}
+
+.btn-guardar-medicion:hover {
+  background: linear-gradient(135deg, #fb923c, #f97316);
+  box-shadow: 0 6px 18px rgba(249, 115, 22, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-cancelar-medicion {
+  padding: 10px 16px;
+  background: transparent;
+  color: #a0a0a0;
+  border: 1.5px solid rgba(169, 169, 169, 0.3);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  transition: all 0.2s;
+}
+
+.btn-cancelar-medicion:hover {
+  color: #f0f0f0;
+  border-color: rgba(169, 169, 169, 0.6);
+  background: rgba(169, 169, 169, 0.05);
+}
+
+/* ─── ESTADO VACÍO ─── */
+.sin-datos {
+  text-align: center;
+  padding: 40px;
+  color: #696969;
+}
+
+.sin-datos p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 768px) {
+  .graficas-progresion {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .rango-selector {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .grafico-container {
+    aspect-ratio: auto;
+    min-height: 300px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .btn-guardar-medicion,
+  .btn-cancelar-medicion {
+    width: 100%;
+  }
+}
+

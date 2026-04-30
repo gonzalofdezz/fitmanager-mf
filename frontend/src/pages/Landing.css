@@ -147,13 +147,13 @@
 .hero-section {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  min-height: 120vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 100px 48px 60px;
-  overflow: hidden;
+  padding: 100px 48px 200px;
+  overflow: visible;
   box-sizing: border-box;
 }
 
@@ -207,7 +207,7 @@
 .hero-content {
   position: relative;
   z-index: 2;
-  max-width: 900px;
+  max-width: none;
   text-align: center;
   width: 100%;
   margin: 0 auto;
@@ -257,9 +257,12 @@
 .hero-pills {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 8px;
   justify-content: center;
   margin-bottom: 48px;
+  max-width: 100%;
+  width: 100%;
+  min-height: 60px;
 }
 
 .hero-pill {
@@ -267,12 +270,15 @@
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  padding: 12px 24px;
-  border: 1.5px solid rgba(249, 115, 22, 0.25);
+  padding: 12px 20px;
+  border: 2px solid #f97316;
   border-radius: 50px;
-  background: rgba(249, 115, 22, 0.04);
+  background: #1a1a1a;
   cursor: pointer;
   transition: all 0.22s ease;
+  font-size: 0.85rem;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .hero-pill:hover {
@@ -288,17 +294,17 @@
 }
 
 .pill-label {
-  font-size: 0.88rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: #f0f0f0;
   text-transform: uppercase;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.6px;
 }
 
 .pill-desc {
-  font-size: 0.66rem;
+  font-size: 0.6rem;
   color: #696969;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
 }
 
 /* CTAs hero */
@@ -352,7 +358,7 @@
 /* scroll indicator */
 .hero-scroll-indicator {
   position: absolute;
-  bottom: 28px;
+  bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -364,6 +370,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
+  pointer-events: none;
 }
 
 .scroll-line {

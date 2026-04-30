@@ -13,6 +13,7 @@ export function Sidebar({ activeModule, onModuleChange }: SidebarProps) {
 
   // Módulos para USER normal
   const userModules = [
+    { id: 'progresion', label: 'Mi Progresión' },
     { id: 'clases', label: 'Clases' },
     { id: 'suscripciones', label: 'Suscripciones' },
     { id: 'reservas', label: 'Reservas' },
@@ -21,6 +22,7 @@ export function Sidebar({ activeModule, onModuleChange }: SidebarProps) {
 
   // Módulos para MANAGER (incluye ver clases, gestión, y acceso a todo lo demás)
   const managerModules = [
+    { id: 'progresion', label: 'Mi Progresión' },
     { id: 'clases', label: 'Ver Clases' },
     { id: 'gestion-clases', label: 'Gestión de Clases' },
     { id: 'suscripciones', label: 'Suscripciones' },
