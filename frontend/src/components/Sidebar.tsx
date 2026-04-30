@@ -9,25 +9,40 @@ interface SidebarProps {
 
 export function Sidebar({ activeModule, onModuleChange }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(true);
-  const { usuario, logout } = useAuth();
+  const { usuario, logout, isManager } = useAuth();
 
-  const modules = [
+  // Módulos para USER normal
+  const userModules = [
     { id: 'clases', label: 'Clases' },
     { id: 'suscripciones', label: 'Suscripciones' },
     { id: 'reservas', label: 'Reservas' },
     { id: 'rutinas', label: 'Rutinas' },
   ];
 
+  // Módulos para MANAGER (incluye ver clases, gestión, y acceso a todo lo demás)
+  const managerModules = [
+    { id: 'clases', label: 'Ver Clases' },
+    { id: 'gestion-clases', label: 'Gestión de Clases' },
+    { id: 'suscripciones', label: 'Suscripciones' },
+    { id: 'reservas', label: 'Reservas' },
+    { id: 'rutinas', label: 'Rutinas' },
+  ];
+
+  const modules = isManager ? managerModules : userModules;
+
   return (
     <>
       <button className="sidebar-toggle" onClick={() => setIsOpen(!isOpen)}>
-        {isOpen ? '✕' : '☰'}
+        {isOpen ? '×' : '≡'}
       </button>
 
       <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <h2>FitManager</h2>
           <p className="user-info">{usuario?.nombre}</p>
+          <span className={`role-badge ${isManager ? 'role-manager' : 'role-user'}`}>
+            {isManager ? 'Manager' : 'Usuario'}
+          </span>
         </div>
 
         <nav className="sidebar-nav">
@@ -57,4 +72,3 @@ export function Sidebar({ activeModule, onModuleChange }: SidebarProps) {
     </>
   );
 }
-

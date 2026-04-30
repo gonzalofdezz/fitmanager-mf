@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import './SuscripcionList.css';
 
 export function SuscripcionList() {
-  const { usuario } = useAuth();
+  const { usuario, isManager } = useAuth();
   const [suscripcionActiva, setSuscripcionActiva] = useState<Suscripcion | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -182,12 +182,17 @@ export function SuscripcionList() {
     return <div className="loading">Cargando información de suscripción...</div>;
   }
 
-  return (
-    <div className="suscripcion-list">
-      <div className="list-header">
-        <h2>Elige tu Plan de Suscripción</h2>
-        <p className="subtitle">Acceso completo al gimnasio FitManager</p>
-      </div>
+   return (
+     <div className="suscripcion-list">
+       <div className="list-header">
+         <h2>Elige tu Plan de Suscripción</h2>
+         <p className="subtitle">Acceso completo al gimnasio FitManager</p>
+         {isManager && (
+           <button className="btn-nueva-suscripcion" title="Crear nuevo plan de suscripción">
+             + Crear Plan
+           </button>
+         )}
+       </div>
 
       {error && <div className="error-banner">{error}</div>}
       {pagoExitoso && (
@@ -236,18 +241,24 @@ export function SuscripcionList() {
               <p className="benefits-title">Incluye:</p>
               <ul>
                 {plan.beneficios.map((beneficio, idx) => (
-                  <li key={idx}>✓ {beneficio}</li>
+                  <li key={idx}>{beneficio}</li>
                 ))}
               </ul>
             </div>
 
-            <button
-              className="btn-comprar"
-              onClick={() => handleComprarPlan(plan.id)}
-              disabled={procesandoPago || (suscripcionActiva?.tipoPlan === plan.id)}
-            >
-              {procesandoPago ? 'Procesando...' : suscripcionActiva?.tipoPlan === plan.id ? '✓ Plan Actual' : 'Comprar Ahora'}
-            </button>
+             <button
+               className="btn-comprar"
+               onClick={() => handleComprarPlan(plan.id)}
+               disabled={procesandoPago || (suscripcionActiva?.tipoPlan === plan.id)}
+             >
+               {procesandoPago ? 'Procesando...' : suscripcionActiva?.tipoPlan === plan.id ? 'Plan Actual' : 'Comprar Ahora'}
+             </button>
+             {isManager && (
+               <>
+                 <button className="btn-edit-plan" title="Editar plan">Editar</button>
+                 <button className="btn-delete-plan" title="Eliminar plan">Eliminar</button>
+               </>
+             )}
           </div>
         ))}
       </div>

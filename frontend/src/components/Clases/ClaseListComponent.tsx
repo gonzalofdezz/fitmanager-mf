@@ -10,7 +10,7 @@ function formatFecha(fechaStr: string): string {
 }
 
 export function ClaseList() {
-  const { usuario } = useAuth();
+  const { usuario, isManager } = useAuth();
   const [clases, setClases] = useState<Clase[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,6 +20,7 @@ export function ClaseList() {
   const [loadingInscripciones, setLoadingInscripciones] = useState(false);
   const [showMisInscripciones, setShowMisInscripciones] = useState(false);
   const [cancelando, setCancelando] = useState<string | null>(null);
+  const [eliminando, setEliminando] = useState<number | null>(null);
 
   useEffect(() => {
     fetchClases();
@@ -70,8 +71,9 @@ export function ClaseList() {
       setTimeout(() => setSuccessMsg(null), 4000);
       // Actualizar inscripciones si el panel está abierto
       if (showMisInscripciones) fetchMisInscripciones();
-    } catch (err: any) {
-      const msg = err?.response?.data?.message || err?.response?.data || null;
+    } catch (err: unknown) {
+      const error = err as any;
+      const msg = error?.response?.data?.message || error?.response?.data || null;
       setError(msg ? String(msg) : 'Error al inscribirte. Inténtalo de nuevo.');
       console.error(err);
     } finally {
@@ -92,6 +94,28 @@ export function ClaseList() {
     }
   };
 
+  const handleEliminarClase = async (claseId: number) => {
+    if (!confirm('¿Estás seguro de que quieres eliminar esta clase? Esta acción no se puede deshacer.')) return;
+    setEliminando(claseId);
+    try {
+      await claseService.delete(claseId);
+      setClases(prev => prev.filter(c => c.id !== claseId));
+      showSuccess('Clase eliminada con éxito');
+    } catch (err: unknown) {
+      const error = err as any;
+      const msg = error?.response?.data?.message || 'Error al eliminar la clase';
+      setError(msg);
+      console.error(err);
+    } finally {
+      setEliminando(null);
+    }
+  };
+
+  const showSuccess = (msg: string) => {
+    setSuccessMsg(msg);
+    setTimeout(() => setSuccessMsg(null), 4000);
+  };
+
   const getClaseNombre = (claseId: number) => {
     const clase = clases.find(c => c.id === claseId);
     return clase?.nombre || `Clase #${claseId}`;
@@ -106,19 +130,26 @@ export function ClaseList() {
   }
 
   return (
-    <div className="clase-list">
-      <div className="list-header">
-        <div>
-          <h2>Clases del Gimnasio</h2>
-          <p className="list-subtitle">Selecciona una clase y apúntate</p>
-        </div>
-        <button
-          className="btn-mis-inscripciones"
-          onClick={handleToggleMisInscripciones}
-        >
-          Mis Inscripciones {misInscripciones.length > 0 && !showMisInscripciones ? `(${misInscripciones.length})` : ''}
-        </button>
-      </div>
+     <div className="clase-list">
+       <div className="list-header">
+         <div>
+           <h2>Clases del Gimnasio</h2>
+           <p className="list-subtitle">Selecciona una clase y apúntate</p>
+         </div>
+         <div className="header-buttons">
+           {isManager && (
+             <button className="btn-nueva-clase" title="Crear nueva clase">
+               + Nueva Clase
+             </button>
+           )}
+           <button
+             className="btn-mis-inscripciones"
+             onClick={handleToggleMisInscripciones}
+           >
+             Mis Inscripciones {misInscripciones.length > 0 && !showMisInscripciones ? `(${misInscripciones.length})` : ''}
+           </button>
+         </div>
+       </div>
 
       {error && <div className="error-banner">{error}</div>}
       {successMsg && <div className="success-banner">{successMsg}</div>}
@@ -214,15 +245,28 @@ export function ClaseList() {
                 </div>
               </div>
 
-              <div className="card-actions">
-                <button
-                  className="btn-reservar"
-                  onClick={() => handleInscribirse(clase.id!)}
-                  disabled={inscribiendo === clase.id}
-                >
-                  {inscribiendo === clase.id ? 'Inscribiendo...' : 'Inscribirme'}
-                </button>
-              </div>
+             <div className="card-actions">
+                 <button
+                   className="btn-reservar"
+                   onClick={() => handleInscribirse(clase.id!)}
+                   disabled={inscribiendo === clase.id}
+                 >
+                   {inscribiendo === clase.id ? 'Inscribiendo...' : 'Inscribirme'}
+                 </button>
+                 {isManager && (
+                   <>
+                     <button className="btn-edit-clase" title="Editar">Editar</button>
+                     <button
+                       className="btn-delete-clase"
+                       onClick={() => handleEliminarClase(clase.id!)}
+                       disabled={eliminando === clase.id}
+                       title="Eliminar"
+                     >
+                       {eliminando === clase.id ? 'Eliminando...' : 'Eliminar'}
+                     </button>
+                   </>
+                 )}
+               </div>
             </div>
           ))}
         </div>

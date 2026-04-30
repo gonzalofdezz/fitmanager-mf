@@ -1,14 +1,17 @@
 .auth-page {
-  min-height: 100vh;
+  height: 55vh;
   background-color: #111111;
   background-image:
     radial-gradient(ellipse at 30% 30%, rgba(249, 115, 22, 0.06) 0%, transparent 60%),
     radial-gradient(ellipse at 80% 80%, rgba(249, 115, 22, 0.03) 0%, transparent 60%);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 20px;
+  padding: 5px;
   width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  padding-top: 10px;
 }
 
 .auth-container {
@@ -17,10 +20,11 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  max-height: calc(100vh - 20px);
 }
 
 .auth-form-wrapper {
-  padding: 44px;
+  padding: 28px;
   background: #1c1c1c;
   border: 1.5px solid #2a2a2a;
   border-top: 4px solid #f97316;
@@ -31,8 +35,8 @@
 
 .auth-form-wrapper h1 {
   color: #f97316;
-  font-size: 2.2rem;
-  margin-bottom: 6px;
+  font-size: 2rem;
+  margin-bottom: 4px;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 3px;
@@ -40,27 +44,27 @@
 
 .auth-form-wrapper .subtitle {
   color: #a0a0a0;
-  font-size: 0.9rem;
-  margin-bottom: 28px;
+  font-size: 0.85rem;
+  margin-bottom: 20px;
   letter-spacing: 0.5px;
 }
 
 .auth-tabs {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
   border-bottom: 1.5px solid #2a2a2a;
 }
 
 .auth-tabs .tab {
-  padding: 14px;
+  padding: 10px;
   background: transparent;
   color: #a0a0a0;
   border: none;
   border-bottom: 3px solid transparent;
   margin-bottom: -1.5px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
   transition: all 0.25s ease;
   text-transform: uppercase;
@@ -73,30 +77,30 @@
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
 }
 
 .auth-form .form-group {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 5px;
 }
 
 .auth-form .form-group label {
   color: #a0a0a0;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.8px;
 }
 
 .auth-form .form-group input {
-  padding: 13px 16px;
+  padding: 11px 14px;
   background: #111111;
   border: 1.5px solid #2a2a2a;
   border-radius: 8px;
   color: #f0f0f0;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   transition: all 0.25s ease;
   font-family: inherit;
 }
@@ -120,18 +124,18 @@
 }
 
 .btn-auth {
-  padding: 14px;
+  padding: 12px;
   background: linear-gradient(135deg, #f97316, #ea580c);
   color: #111111;
   border: none;
   border-radius: 10px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 800;
   cursor: pointer;
   transition: all 0.25s ease;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  margin-top: 6px;
+  margin-top: 4px;
 }
 
 .btn-auth:hover {
@@ -143,8 +147,8 @@
 .auth-footer {
   text-align: center;
   color: #a0a0a0;
-  margin-top: 20px;
-  font-size: 0.9rem;
+  margin-top: 14px;
+  font-size: 0.85rem;
 }
 
 .auth-footer span {

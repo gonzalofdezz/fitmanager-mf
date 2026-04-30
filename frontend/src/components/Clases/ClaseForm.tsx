@@ -49,7 +49,7 @@ export function ClaseForm({ clase, onSubmit, onCancel }: ClaseFormProps) {
       <div className="form-header">
         <h3>{clase ? 'Editar Clase' : 'Nueva Clase'}</h3>
         <button type="button" className="btn-close" onClick={onCancel}>
-          ✕
+          ×
         </button>
       </div>
 

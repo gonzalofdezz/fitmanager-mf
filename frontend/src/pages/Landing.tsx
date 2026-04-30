@@ -12,7 +12,7 @@ export function Landing({
   isAuthenticated = false,
   onNavigateToModule
 }: LandingProps) {
-  const { logout, usuario } = useAuth();
+  const { logout, usuario, isManager } = useAuth();
   const sections = [
     { label: 'Clases', desc: 'Yoga, Spinning, Crossfit...', action: 'clases' },
     { label: 'Planes', desc: 'Básico · Premium · VIP', action: 'suscripciones' },
@@ -65,6 +65,12 @@ export function Landing({
           <a onClick={() => handleModuleClick('suscripciones')} className="nav-link-module">Planes</a>
           <a onClick={() => handleModuleClick('reservas')} className="nav-link-module">Reservas</a>
           <a onClick={() => handleModuleClick('rutinas')} className="nav-link-module">Rutinas</a>
+          {isManager && (
+            <>
+              <span className="nav-divider">|</span>
+              <a onClick={() => handleModuleClick('gestion-clases')} className="nav-link-module nav-link-admin">Gestionar</a>
+            </>
+          )}
           <a onClick={() => handleModuleClick('contacto')} className="nav-link-module">Contacto</a>
         </div>
 
@@ -119,6 +125,18 @@ export function Landing({
                 <span className="pill-desc">{s.desc}</span>
               </button>
             ))}
+            {isManager && (
+              <>
+                <button
+                  className="hero-pill hero-pill-admin"
+                  onClick={() => handleModuleClick('gestion-clases')}
+                  title="Panel de gestión para managers"
+                >
+                  <span className="pill-label">Gestión</span>
+                  <span className="pill-desc">Administra clases, planes, reservas y rutinas</span>
+                </button>
+              </>
+            )}
           </div>
 
           <div className="hero-actions">
@@ -186,6 +204,10 @@ export function Landing({
               { title: 'Clases en grupo', detail: 'Yoga · Spinning · Crossfit · Pilates', tag: 'Disponible', action: 'clases' },
               { title: 'Reserva de aulas', detail: 'Personal o grupal · Hasta 30 días', tag: 'Online', action: 'reservas' },
               { title: 'Rutinas personalizadas', detail: 'Crea, gestiona y optimiza tu entrenamiento', tag: 'Nuevo', action: 'rutinas' },
+              ...(isManager ? [{ title: 'Gestión de Clases', detail: 'Crea, edita y elimina clases', tag: 'Admin', action: 'gestion-clases' }] : []),
+              ...(isManager ? [{ title: 'Gestión de Planes', detail: 'Administra suscripciones de usuarios', tag: 'Admin', action: 'gestion-suscripciones' }] : []),
+              ...(isManager ? [{ title: 'Gestión de Reservas', detail: 'Controla todas las reservas', tag: 'Admin', action: 'gestion-reservas' }] : []),
+              ...(isManager ? [{ title: 'Gestión de Rutinas', detail: 'Supervisa rutinas de entrenamiento', tag: 'Admin', action: 'gestion-rutinas' }] : []),
             ].map(card => (
               <div
                 key={card.title}

@@ -1,12 +1,12 @@
 import axios from 'axios';
+import { apiClient } from './api';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
-const apiClient = axios.create({
+// apiClient sin token para auth (login/register no necesitan token)
+const authApiClient = axios.create({
   baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  headers: { 'Content-Type': 'application/json' },
 });
 
 export interface LoginRequest {
@@ -25,6 +25,7 @@ export interface AuthResponse {
   nombre?: string;
   email?: string;
   token?: string;
+  rol?: string;
   message?: string;
 }
 
@@ -33,7 +34,7 @@ export const authService = {
   register: async (data: RegisterRequest): Promise<AuthResponse> => {
     try {
       console.log('Registrando usuario:', data);
-      const response = await apiClient.post<AuthResponse>('/auth/registrar', data);
+      const response = await authApiClient.post<AuthResponse>('/auth/registrar', data);
       console.log('Registro exitoso:', response.data);
       return response.data;
     } catch (error: unknown) {
@@ -51,7 +52,7 @@ export const authService = {
   login: async (email: string, contrasena: string): Promise<AuthResponse> => {
     try {
       console.log('Login attempt:', email);
-      const response = await apiClient.post<AuthResponse>('/auth/login', {
+      const response = await authApiClient.post<AuthResponse>('/auth/login', {
         email,
         contrasena,
       });
@@ -98,4 +99,3 @@ export const authService = {
     }
   },
 };
-

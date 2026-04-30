@@ -1,13 +1,5 @@
 import axios from 'axios';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
-
-const apiClient = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+import { apiClient } from './api';
 
 export interface Clase {
   id?: number;
@@ -126,6 +118,20 @@ export const claseService = {
       return response.data;
     } catch (error) {
       console.error('Error updating clase:', error);
+      if (axios.isAxiosError(error)) {
+        console.error('Status:', error.response?.status);
+        console.error('Data:', error.response?.data);
+      }
+      throw error;
+    }
+  },
+
+  // Eliminar clase - DELETE /clases/{id}
+  delete: async (id: number): Promise<void> => {
+    try {
+      await apiClient.delete(`/clases/${id}`);
+    } catch (error) {
+      console.error('Error deleting clase:', error);
       if (axios.isAxiosError(error)) {
         console.error('Status:', error.response?.status);
         console.error('Data:', error.response?.data);

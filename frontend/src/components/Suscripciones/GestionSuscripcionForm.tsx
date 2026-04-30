@@ -1,24 +1,39 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Suscripcion } from '../../services/suscripcionService';
-import { useAuth } from '../../context/AuthContext';
+import { usuarioService } from '../../services/usuarioService';
+import { Usuario } from '../../types/Usuario';
 import './SuscripcionForm.css';
 
-interface SuscripcionFormProps {
+interface GestionSuscripcionFormProps {
   suscripcion?: Suscripcion;
   onSubmit: (data: Suscripcion) => Promise<void>;
   onCancel: () => void;
+  usuariosMap: Record<string, string>;
 }
 
-export function SuscripcionForm({ suscripcion, onSubmit, onCancel }: SuscripcionFormProps) {
-  const { usuario } = useAuth();
+export function GestionSuscripcionForm({ suscripcion, onSubmit, onCancel }: GestionSuscripcionFormProps) {
+  const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [formData, setFormData] = useState({
-    usuarioId: usuario?.id || '',
+    usuarioId: suscripcion?.usuarioId || '',
     tipoPlan: suscripcion?.tipoPlan || 'PREMIUM',
-    fechaInicio: (suscripcion?.fechaInicio || new Date().toISOString()).toString().split('T')[0],
-    fechaFin: (suscripcion?.fechaFin || new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString()).toString().split('T')[0],
+    fechaInicio: (suscripcion?.fechaInicio ? new Date(suscripcion.fechaInicio).toISOString() : new Date().toISOString()).split('T')[0],
+    fechaFin: (suscripcion?.fechaFin ? new Date(suscripcion.fechaFin).toISOString() : new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString()).split('T')[0],
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    fetchUsuarios();
+  }, []);
+
+  const fetchUsuarios = async () => {
+    try {
+      const data = await usuarioService.getAll();
+      setUsuarios(data);
+    } catch (err) {
+      console.error('Error fetching usuarios:', err);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -36,7 +51,7 @@ export function SuscripcionForm({ suscripcion, onSubmit, onCancel }: Suscripcion
     try {
       const dataToSubmit: Suscripcion = {
         usuarioId: formData.usuarioId,
-        tipoPlan: formData.tipoPlan as 'BASICA' | 'PREMIUM' | 'VIP',
+        tipoPlan: formData.tipoPlan as 'BASICA' | 'PREMIUM' | 'VIP' | 'NINGUNA',
         fechaInicio: formData.fechaInicio,
         fechaFin: formData.fechaFin,
       };
@@ -50,9 +65,10 @@ export function SuscripcionForm({ suscripcion, onSubmit, onCancel }: Suscripcion
   };
 
   const planes = [
-    { value: 'BASICA', label: 'Básico - €9.99 (30 días)', dias: 30 },
-    { value: 'PREMIUM', label: 'Premium - €19.99 (60 días)', dias: 60 },
-    { value: 'VIP', label: 'VIP - €29.99 (90 días)', dias: 90 },
+    { value: 'BASICA', label: 'Básico - €9.99', dias: 30 },
+    { value: 'PREMIUM', label: 'Premium - €19.99', dias: 60 },
+    { value: 'VIP', label: 'VIP - €29.99', dias: 90 },
+    { value: 'NINGUNA', label: 'Ninguna', dias: 0 },
   ];
 
   const planActual = planes.find(p => p.value === formData.tipoPlan);
@@ -60,13 +76,32 @@ export function SuscripcionForm({ suscripcion, onSubmit, onCancel }: Suscripcion
   return (
     <form className="suscripcion-form" onSubmit={handleSubmit}>
       <div className="form-header">
-        <h3>{suscripcion ? 'Editar Suscripción' : 'Nueva Suscripción'}</h3>
+        <h3>{suscripcion ? 'Editar Plan' : 'Nuevo Plan'}</h3>
         <button type="button" className="btn-close" onClick={onCancel}>
           ×
         </button>
       </div>
 
       {error && <div className="error-message">{error}</div>}
+
+      <div className="form-group">
+        <label htmlFor="usuarioId">Usuario</label>
+        <select
+          id="usuarioId"
+          name="usuarioId"
+          value={formData.usuarioId}
+          onChange={handleChange}
+          required
+          disabled={!!suscripcion}
+        >
+          <option value="">-- Selecciona un usuario --</option>
+           {usuarios.map(usuario => (
+             <option key={usuario.id} value={usuario.id}>
+               {usuario.nombre} ({usuario.id})
+             </option>
+           ))}
+        </select>
+      </div>
 
       <div className="form-group">
         <label htmlFor="tipoPlan">Plan</label>
@@ -105,8 +140,8 @@ export function SuscripcionForm({ suscripcion, onSubmit, onCancel }: Suscripcion
             id="fechaFin"
             name="fechaFin"
             value={formData.fechaFin}
-            disabled
-            readOnly
+            onChange={handleChange}
+            required
           />
         </div>
       </div>
@@ -122,7 +157,7 @@ export function SuscripcionForm({ suscripcion, onSubmit, onCancel }: Suscripcion
 
       <div className="form-actions">
         <button type="submit" className="btn-submit" disabled={loading}>
-          {loading ? 'Guardando...' : 'Crear Suscripción'}
+          {loading ? 'Guardando...' : suscripcion ? 'Actualizar Plan' : 'Crear Plan'}
         </button>
         <button type="button" className="btn-cancel" onClick={onCancel}>
           Cancelar
@@ -131,4 +166,5 @@ export function SuscripcionForm({ suscripcion, onSubmit, onCancel }: Suscripcion
     </form>
   );
 }
+
 

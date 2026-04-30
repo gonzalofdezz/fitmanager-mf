@@ -362,7 +362,7 @@ export function ReservaCalendario() {
       {modal.open && modal.fecha && (
         <div className="rc-modal-overlay" onClick={() => setModal({ fecha: null, open: false })}>
           <div className="rc-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="rc-modal-close" onClick={() => setModal({ fecha: null, open: false })}>✕</button>
+            <button className="rc-modal-close" onClick={() => setModal({ fecha: null, open: false })}>×</button>
 
             <div className="rc-modal-header">
               <div>

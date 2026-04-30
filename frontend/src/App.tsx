@@ -3,20 +3,25 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { AuthPage } from './pages/Auth';
 import { Landing } from './pages/Landing';
 import { Contact } from './pages/Contact';
-// @ts-ignore
-import { ClaseList } from './components/Clases/ClaseListComponent.tsx';
-// @ts-ignore
-import { SuscripcionList } from './components/Suscripciones/SuscripcionListComponent.tsx';
-// @ts-ignore
-import { ReservaCalendario } from './components/Reservas/ReservaCalendario.tsx';
-// @ts-ignore
-import { RutinaList } from './components/Rutinas/RutinaListComponent.tsx';
+import { ClaseList } from './components/Clases/ClaseListComponent';
+import { GestionClases } from './components/Clases/GestionClases';
+import { SuscripcionList } from './components/Suscripciones/SuscripcionListComponent';
+import { GestionSuscripciones } from './components/Suscripciones/GestionSuscripciones';
+import { ReservaCalendario } from './components/Reservas/ReservaCalendario';
+import { GestionReservas } from './components/Reservas/GestionReservas';
+import { RutinaList } from './components/Rutinas/RutinaListComponent';
+import { GestionRutinas } from './components/Rutinas/GestionRutinas';
 import './App.css';
 
-type AppView = 'landing' | 'clases' | 'suscripciones' | 'reservas' | 'rutinas' | 'contacto';
+type AppView = 'landing' | 'clases' | 'gestion-clases' | 'suscripciones' | 'gestion-suscripciones' | 'reservas' | 'gestion-reservas' | 'rutinas' | 'gestion-rutinas' | 'contacto';
+
+interface ModuleWrapperProps {
+  isAuthenticated: boolean;
+  onRequestAuth: () => void;
+}
 
 function AppContent() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isManager } = useAuth();
   const [view, setView] = useState<AppView>('landing');
   const [showAuthModal, setShowAuthModal] = useState(false);
 
@@ -83,25 +88,49 @@ function AppContent() {
               onRequestAuth={handleRequestAuth}
             />
           )}
-          {view === 'suscripciones' && (
-            <SuscripcionListWrapper
+          {view === 'gestion-clases' && isManager && (
+            <GestionClasesWrapper
               isAuthenticated={isAuthenticated}
               onRequestAuth={handleRequestAuth}
             />
           )}
-          {view === 'reservas' && (
-            <ReservaCalendarioWrapper
-              isAuthenticated={isAuthenticated}
-              onRequestAuth={handleRequestAuth}
-            />
-          )}
-          {view === 'rutinas' && (
-            <RutinaListWrapper
-              isAuthenticated={isAuthenticated}
-              onRequestAuth={handleRequestAuth}
-            />
-          )}
-          {view === 'contacto' && <Contact />}
+           {view === 'suscripciones' && (
+             <SuscripcionListWrapper
+               isAuthenticated={isAuthenticated}
+               onRequestAuth={handleRequestAuth}
+             />
+           )}
+           {view === 'gestion-suscripciones' && isManager && (
+             <GestionSuscripcionesWrapper
+               isAuthenticated={isAuthenticated}
+               onRequestAuth={handleRequestAuth}
+             />
+           )}
+           {view === 'reservas' && (
+             <ReservaCalendarioWrapper
+               isAuthenticated={isAuthenticated}
+               onRequestAuth={handleRequestAuth}
+             />
+           )}
+           {view === 'gestion-reservas' && isManager && (
+             <GestionReservasWrapper
+               isAuthenticated={isAuthenticated}
+               onRequestAuth={handleRequestAuth}
+             />
+           )}
+           {view === 'rutinas' && (
+             <RutinaListWrapper
+               isAuthenticated={isAuthenticated}
+               onRequestAuth={handleRequestAuth}
+             />
+           )}
+           {view === 'gestion-rutinas' && isManager && (
+             <GestionRutinasWrapper
+               isAuthenticated={isAuthenticated}
+               onRequestAuth={handleRequestAuth}
+             />
+           )}
+           {view === 'contacto' && <Contact />}
         </main>
       </div>
     </>
@@ -109,7 +138,7 @@ function AppContent() {
 }
 
 // Wrappers para mostrar overlay si no autenticado
-function ClaseListWrapper({ isAuthenticated, onRequestAuth }: any) {
+function ClaseListWrapper({ isAuthenticated, onRequestAuth }: ModuleWrapperProps) {
   return (
     <div className={isAuthenticated ? '' : 'module-overlay-wrapper'}>
       <ClaseList />
@@ -128,7 +157,83 @@ function ClaseListWrapper({ isAuthenticated, onRequestAuth }: any) {
   );
 }
 
-function SuscripcionListWrapper({ isAuthenticated, onRequestAuth }: any) {
+function GestionClasesWrapper({ isAuthenticated, onRequestAuth }: ModuleWrapperProps) {
+  return (
+    <div className={isAuthenticated ? '' : 'module-overlay-wrapper'}>
+      <GestionClases />
+      {!isAuthenticated && (
+        <div className="module-overlay">
+          <div className="overlay-content">
+            <h2>Acceso Limitado</h2>
+            <p>Inicia sesión como Manager para gestionar clases</p>
+            <button className="overlay-button" onClick={onRequestAuth}>
+              Iniciar Sesión
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function GestionSuscripcionesWrapper({ isAuthenticated, onRequestAuth }: ModuleWrapperProps) {
+  return (
+    <div className={isAuthenticated ? '' : 'module-overlay-wrapper'}>
+      <GestionSuscripciones />
+      {!isAuthenticated && (
+        <div className="module-overlay">
+          <div className="overlay-content">
+            <h2>Acceso Limitado</h2>
+            <p>Inicia sesión como Manager para gestionar planes</p>
+            <button className="overlay-button" onClick={onRequestAuth}>
+              Iniciar Sesión
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function GestionReservasWrapper({ isAuthenticated, onRequestAuth }: ModuleWrapperProps) {
+  return (
+    <div className={isAuthenticated ? '' : 'module-overlay-wrapper'}>
+      <GestionReservas />
+      {!isAuthenticated && (
+        <div className="module-overlay">
+          <div className="overlay-content">
+            <h2>Acceso Limitado</h2>
+            <p>Inicia sesión como Manager para gestionar reservas</p>
+            <button className="overlay-button" onClick={onRequestAuth}>
+              Iniciar Sesión
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function GestionRutinasWrapper({ isAuthenticated, onRequestAuth }: ModuleWrapperProps) {
+  return (
+    <div className={isAuthenticated ? '' : 'module-overlay-wrapper'}>
+      <GestionRutinas />
+      {!isAuthenticated && (
+        <div className="module-overlay">
+          <div className="overlay-content">
+            <h2>Acceso Limitado</h2>
+            <p>Inicia sesión como Manager para gestionar rutinas</p>
+            <button className="overlay-button" onClick={onRequestAuth}>
+              Iniciar Sesión
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SuscripcionListWrapper({ isAuthenticated, onRequestAuth }: ModuleWrapperProps) {
   return (
     <div className={isAuthenticated ? '' : 'module-overlay-wrapper'}>
       <SuscripcionList />
@@ -147,7 +252,7 @@ function SuscripcionListWrapper({ isAuthenticated, onRequestAuth }: any) {
   );
 }
 
-function ReservaCalendarioWrapper({ isAuthenticated, onRequestAuth }: any) {
+function ReservaCalendarioWrapper({ isAuthenticated, onRequestAuth }: ModuleWrapperProps) {
   return (
     <div className={isAuthenticated ? '' : 'module-overlay-wrapper'}>
       <ReservaCalendario />
@@ -166,7 +271,7 @@ function ReservaCalendarioWrapper({ isAuthenticated, onRequestAuth }: any) {
   );
 }
 
-function RutinaListWrapper({ isAuthenticated, onRequestAuth }: any) {
+function RutinaListWrapper({ isAuthenticated, onRequestAuth }: ModuleWrapperProps) {
   return (
     <div className={isAuthenticated ? '' : 'module-overlay-wrapper'}>
       <RutinaList />
@@ -185,8 +290,12 @@ function RutinaListWrapper({ isAuthenticated, onRequestAuth }: any) {
   );
 }
 
+interface AuthModalProps {
+  onClose: () => void;
+  onAuthSuccess: () => void;
+}
 
-function AuthModal({ onClose, onAuthSuccess }: any) {
+function AuthModal({ onClose, onAuthSuccess }: AuthModalProps) {
   return (
     <div className="auth-modal-overlay">
       <div className="auth-modal">

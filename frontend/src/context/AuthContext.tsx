@@ -1,15 +1,19 @@
 import React, { createContext, useState, useCallback } from 'react';
 import { authService } from '../services/authService';
 
+export type UserRole = 'USER' | 'MANAGER';
+
 export interface Usuario {
   id: string;
   nombre: string;
   email: string;
+  rol: UserRole;
 }
 
 interface AuthContextType {
   usuario: Usuario | null;
   isAuthenticated: boolean;
+  isManager: boolean;
   login: (email: string, contrasena: string) => Promise<boolean>;
   register: (nombre: string, email: string, contrasena: string) => Promise<boolean>;
   logout: () => void;
@@ -30,16 +34,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem('token', response.token);
       }
 
-      // Si el login no devuelve id, obtenerlo por email
       let userId = response.id;
       let userName = response.nombre;
+      let userRol: UserRole = (response.rol as UserRole) || 'USER';
+
       if (!userId) {
         try {
           const userInfo = await authService.getByEmail(email);
           userId = userInfo.id;
           userName = userInfo.nombre || userName;
+          if (userInfo.rol) userRol = userInfo.rol as UserRole;
         } catch (_) {
-          // Usar email como fallback si no se puede obtener el id
           userId = email;
         }
       }
@@ -48,6 +53,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         id: userId || email,
         nombre: userName || email.split('@')[0],
         email: response.email || email,
+        rol: userRol,
       };
       setUsuario(nuevoUsuario);
       localStorage.setItem('usuario', JSON.stringify(nuevoUsuario));
@@ -65,17 +71,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         id: response.id || email,
         nombre: response.nombre || nombre,
         email: response.email || email,
+        rol: (response.rol as UserRole) || 'USER',
       };
       setUsuario(nuevoUsuario);
       localStorage.setItem('usuario', JSON.stringify(nuevoUsuario));
       if (response.token) {
         localStorage.setItem('token', response.token);
       }
-
-      // NO crear suscripción automáticamente
-      // El usuario debe comprar un plan manualmente
-      console.log('Usuario registrado sin suscripción inicial');
-
       return true;
     } catch (error) {
       console.error('Register error:', error);
@@ -89,8 +91,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     localStorage.removeItem('token');
   }, []);
 
+  const isManager = usuario?.rol === 'MANAGER';
+
   return (
-    <AuthContext.Provider value={{ usuario, isAuthenticated: !!usuario, login, register, logout }}>
+    <AuthContext.Provider value={{ usuario, isAuthenticated: !!usuario, isManager, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -103,4 +107,3 @@ export function useAuth() {
   }
   return context;
 }
-

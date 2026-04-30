@@ -321,7 +321,7 @@ export function RutinaList() {
                 className="btn-toggle-ejercicios"
                 onClick={() => handleToggleEjercicios(rutina.id!)}
               >
-                {expandedRutinaId === rutina.id ? '▲ Ocultar ejercicios' : '▼ Ver ejercicios'}
+                {expandedRutinaId === rutina.id ? 'Ocultar ejercicios' : 'Ver ejercicios'}
               </button>
 
               {expandedRutinaId === rutina.id && (

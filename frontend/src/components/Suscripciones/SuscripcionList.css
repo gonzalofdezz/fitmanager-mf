@@ -237,3 +237,61 @@
   .planes-grid { grid-template-columns: 1fr; }
   .plan-price { flex-direction: column; align-items: flex-start; }
 }
+
+/* ── Botones de gestión para MANAGER ── */
+.btn-nueva-suscripcion {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #f97316, #fb923c);
+  color: #111;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  margin-top: 10px;
+}
+
+.btn-nueva-suscripcion:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4);
+}
+
+.btn-edit-plan,
+.btn-delete-plan {
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  border-radius: 6px;
+  border: none;
+  margin-top: 6px;
+  width: 100%;
+}
+
+.btn-edit-plan {
+  background: rgba(99, 102, 241, 0.15);
+  color: #818cf8;
+  border: 1px solid #818cf8;
+}
+
+.btn-edit-plan:hover {
+  background: rgba(99, 102, 241, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-delete-plan {
+  background: rgba(220, 38, 38, 0.1);
+  color: #f87171;
+  border: 1px solid #f87171;
+}
+
+.btn-delete-plan:hover {
+  background: rgba(220, 38, 38, 0.25);
+  transform: translateY(-1px);
+}
+
