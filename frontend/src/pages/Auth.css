@@ -1,5 +1,5 @@
 .auth-page {
-  height: 75vh;
+  min-height: 100vh;
   background-color: #111111;
   background-image:
     radial-gradient(ellipse at 30% 30%, rgba(249, 115, 22, 0.06) 0%, transparent 60%),
@@ -10,7 +10,7 @@
   padding: 5px;
   width: 100%;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: auto;
   padding-top: 10px;
 }
 
@@ -20,7 +20,6 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  max-height: calc(100vh - 20px);
 }
 
 .auth-form-wrapper {
@@ -163,7 +162,11 @@
 .auth-decorative { display: none; }
 
 @media (max-width: 768px) {
-  .auth-page { padding: 14px; }
+  .auth-page {
+    padding: 14px;
+    padding-bottom: 30px;
+    align-items: flex-start;
+  }
   .auth-form-wrapper { padding: 24px 20px; }
   .auth-form-wrapper h1 { font-size: 1.6rem; }
   .auth-tabs .tab { padding: 11px; font-size: 0.82rem; }
