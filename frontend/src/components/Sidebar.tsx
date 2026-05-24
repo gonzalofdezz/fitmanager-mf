@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import './Sidebar.css';
+import logo from '../assets/Logo_fit_manager-removebg-preview.png';
 
 interface SidebarProps {
   activeModule: string;
@@ -40,7 +41,7 @@ export function Sidebar({ activeModule, onModuleChange }: SidebarProps) {
 
       <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
-          <h2>FitManager</h2>
+          <img src={logo} alt="FitManager" className="sidebar-logo" />
           <p className="user-info">{usuario?.nombre}</p>
           <span className={`role-badge ${isManager ? 'role-manager' : 'role-user'}`}>
             {isManager ? 'Manager' : 'Usuario'}

@@ -47,6 +47,15 @@
   border-bottom: 2px solid #f97316;
 }
 
+.sidebar-logo {
+  width: 160px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 10px;
+  display: block;
+  filter: brightness(1);
+}
+
 .sidebar-header h2 {
   color: #f97316;
   font-size: 1.8rem;

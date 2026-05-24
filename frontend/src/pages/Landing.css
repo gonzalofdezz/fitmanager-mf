@@ -43,6 +43,14 @@
   user-select: none;
 }
 
+.nav-logo-img {
+  height: 44px;
+  width: auto;
+  display: block;
+  filter: brightness(1);
+  object-fit: contain;
+}
+
 .nav-logo-dot {
   color: #f97316;
 }
@@ -235,6 +243,14 @@
   text-transform: uppercase;
   letter-spacing: -4px;
   margin: 0 0 24px;
+}
+
+.hero-logo {
+  width: clamp(220px, 35vw, 420px);
+  height: auto;
+  margin: 0 0 24px;
+  filter: drop-shadow(0 0 30px rgba(249, 115, 22, 0.35));
+  object-fit: contain;
 }
 
 .hero-title-accent {
@@ -637,6 +653,15 @@
   font-weight: 900;
   color: #f97316;
   letter-spacing: -0.5px;
+  display: flex;
+  align-items: center;
+}
+
+.footer-logo-img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(1);
 }
 
 .footer-copy {

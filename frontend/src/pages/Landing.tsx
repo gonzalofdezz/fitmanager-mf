@@ -1,5 +1,6 @@
 import './Landing.css';
 import { useAuth } from '../context/AuthContext';
+import logo from '../assets/Logo_fit_manager-removebg-preview.png';
 
 interface LandingProps {
   onAcceder?: () => void;
@@ -58,7 +59,7 @@ export function Landing({
       {/* ── NAV ── */}
       <nav className="landing-nav">
         <div className="nav-logo">
-          fitmanager<span className="nav-logo-dot">.</span>
+          <img src={logo} alt="FitManager" className="nav-logo-img" />
         </div>
 
         {/* NAVBAR IGUAL PARA TODOS */}
@@ -109,10 +110,7 @@ export function Landing({
 
         <div className="hero-content">
           <span className="hero-eyebrow">Plataforma de gestión de gimnasio</span>
-          <h1 className="hero-title">
-            FIT<br />
-            <span className="hero-title-accent">MANAGER</span>
-          </h1>
+          <img src={logo} alt="FitManager" className="hero-logo" />
           <p className="hero-subtitle">
             TU TRANSFORMACIÓN<br />EMPIEZA AQUÍ
           </p>
@@ -232,7 +230,7 @@ export function Landing({
       {/* ── FOOTER ── */}
       <footer className="landing-footer">
         <div className="footer-inner">
-          <span className="footer-logo">fitmanager.</span>
+          <span className="footer-logo"><img src={logo} alt="FitManager" className="footer-logo-img" /></span>
           <span className="footer-copy">&copy; {new Date().getFullYear()} FitManager. Todos los derechos reservados.</span>
           {!isAuthenticated && (
             <button className="footer-cta" onClick={handleAuthClick}>
